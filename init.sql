@@ -3,6 +3,14 @@ drop table IF EXISTS course;
 drop table IF EXISTS student;
 drop table IF EXISTS teacher;
 drop table IF EXISTS period;
+drop table IF EXISTS inventory;
+drop table IF EXISTS bill;
+drop table IF EXISTS staff;
+drop table IF EXISTS product;
+drop table IF EXISTS supplier;
+drop table IF EXISTS supermarket;
+
+drop table IF EXISTS billdetail;
 
 CREATE TABLE IF NOT EXISTS student (
     id              SERIAL PRIMARY KEY,
@@ -56,7 +64,108 @@ CREATE TABLE IF NOT EXISTS enrollment (
     student_id      integer REFERENCES student(id) ON DELETE CASCADE
   );
 
+  CREATE TABLE IF NOT EXISTS supermarket (
+      id              SERIAL PRIMARY KEY,
+      address         TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS staff (
+    id              SERIAL PRIMARY KEY,
+    username        TEXT,
+    password        TEXT,
+    position_type   integer,
+    supermarket_id  integer REFERENCES supermarket(id) ON DELETE CASCADE
+  );
+
+  CREATE TABLE IF NOT EXISTS product (
+      id                 SERIAL PRIMARY KEY,
+      product_name       TEXT,
+      sale_price         NUMERIC,
+      cost_price         NUMERIC,
+      supermarket_id  integer REFERENCES supermarket(id) ON DELETE CASCADE
+  );
+
+  CREATE TABLE IF NOT EXISTS supplier (
+      id                 SERIAL PRIMARY KEY,
+      supplier_name      TEXT,
+      address            TEXT,
+      phone              TEXT,
+      email              TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS bill (
+      id                 SERIAL PRIMARY KEY,
+      product_list       TEXT,
+      bill_amount        NUMERIC,
+      create_date        TIMESTAMP default current_timestamp
+    );
+
+CREATE TABLE IF NOT EXISTS inventory (
+  id                 SERIAL PRIMARY KEY,
+  product_id         integer REFERENCES product(id) ON DELETE CASCADE,
+  supplier_id        integer REFERENCES supplier(id) ON DELETE CASCADE,
+  inventory_sum      integer,
+  supermarket_id     integer REFERENCES supermarket(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS billdetail (
+    id                 SERIAL PRIMARY KEY,
+    product_id         integer REFERENCES product(id) ON DELETE CASCADE,
+    bill_id            integer REFERENCES bill(id) ON DELETE CASCADE,
+    bill_amount        NUMERIC,
+    create_date        TIMESTAMP default current_timestamp
+);
+
 CREATE UNIQUE INDEX idx_enrollment ON enrollment (course_id, student_id);
+
+INSERT INTO supermarket (address) VALUES
+('HKUST'),
+('bupt');
+
+
+INSERT INTO product (product_name, sale_price, cost_price, supermarket_id) VALUES
+('coke 2L', 10, 8, 2),
+('coke 300ml', 3, 2.5, 2),
+('iPhone', 5000, 4500, 2),
+('Mac air', 6000, 5000, 2),
+('Mac pro', 10000, 9250, 2),
+('iMac', 5999, 5499, 2),
+('samsung Note7', 5899, 5699, 2),
+('cafe', 24, 22.5, 2),
+('bread', 5, 4.3, 2),
+('pen', 2, 1.1, 2),
+('bottle', 15, 10.2, 2),
+('bag', 199, 178.9, 2),
+('paper', 18, 16.3, 2),
+('earphone', 299, 278, 2),
+('mouse', 149, 130.7, 2);
+
+INSERT INTO supplier (supplier_name, address, phone, email) VALUES
+('walmart', 'Beijing Road', '123123123', '123@gmail.com'),
+('super supplier', 'ShangHai Road', '234-996', '234@gmail.com'),
+('apple supplier', 'XiAn Road', '475-658', '367@gmail.com');
+
+INSERT INTO inventory (product_id, supplier_id, inventory_sum, supermarket_id) VALUES
+(1, 1, 538, 2),
+(2, 1, 99, 2),
+(3, 2, 123, 2),
+(4, 3, 87, 2),
+(5, 3, 876, 2),
+(6, 1, 67, 2),
+(7, 2, 10, 2),
+(8, 1, 13, 2),
+(9, 1, 200, 2),
+(10, 2, 343, 2),
+(11, 2, 65, 2),
+(12, 3, 123, 2),
+(13, 1, 43, 2),
+(14, 3, 654, 2),
+(15, 2, 98, 2);
+
+INSERT INTO staff (username, password, position_type, supermarket_id) VALUES
+('manager', '123456', 1, 2),
+('salesman', '123456', 2, 2),
+('stockman', '123456', 3, 2);
 
 INSERT INTO period (name) VALUES
 ('Fall 2014'),

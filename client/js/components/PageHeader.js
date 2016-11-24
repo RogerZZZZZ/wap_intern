@@ -259,3 +259,33 @@ export let HomeHeader = React.createClass({
     }
 
 });
+
+export let HomeHeaderWithoutButton = React.createClass({
+    getDefaultProps() {
+        return {
+            newLabel: "New",
+            icon: "account"
+        }
+    },
+
+    render() {
+        return (
+            <div className="slds-page-header">
+                <div className="slds-grid">
+                    <div className="slds-col slds-no-flex slds-has-flexi-truncate">
+                        <p className="slds-text-heading--label">{this.props.type}</p>
+                        {/* <DownButtonDropdown data={this.props.views} value={this.props.viewId} onChange={this.props.onViewChange}/> */}
+                    </div>
+                    <div className="slds-col">
+                    </div>
+                    <div className="slds-col slds-no-flex slds-align-bottom">
+                        <div className="slds-grid">
+                            
+                        </div>
+                    </div>
+                </div>
+                <p className="slds-text-body--small slds-m-top--x-small">{this.props.itemCount} {this.props.type.toLowerCase()}</p>
+            </div>
+        );
+    }
+})

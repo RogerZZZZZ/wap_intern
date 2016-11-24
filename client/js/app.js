@@ -3,6 +3,7 @@ import {render} from 'react-dom';
 import {Router, Route, IndexRoute} from 'react-router';
 
 import Shell from './Shell';
+import LoginView from './LoginView';
 import CourseHome from './CourseHome';
 import CourseRecord from './CourseRecord';
 import CourseView from './CourseView';
@@ -15,11 +16,19 @@ import TeacherHome from './TeacherHome';
 import TeacherRecord from './TeacherRecord';
 import TeacherView from './TeacherView';
 import TeacherFormWrapper from './TeacherFormWrapper';
+import ManagerHome from './ManagerHome';
+import SalesmanHome from './SalesmanHome';
+import ProductRecord from './ProductRecord';
+import ProductView from './ProductView';
+import ProductFormWrapper from './ProductFormWrapper';
+import StockmanHome from './StockmanHome';
+import ErrorPage from './ErrorPage';
 
 render((
-    <Router>
+    <Router >
         <Route path="/" component={Shell}>
             <IndexRoute component={StudentHome}/>
+            <Route path="login" component={LoginView}/>
             <Route path="student" component={StudentRecord}>
                 <Route path=":studentId" component={StudentView}/>
                 <Route path=":studentId/edit" component={StudentFormWrapper}/>
@@ -34,6 +43,14 @@ render((
                 <Route path=":teacherId" component={TeacherView}/>
                 <Route path=":teacherId/edit" component={TeacherFormWrapper}/>
             </Route>
+            <Route path="managers" component={ManagerHome} />
+            <Route path="salesmen" component={SalesmanHome} />
+            <Route path="salesman" component={ProductRecord}>
+                <Route path=":productId" component={ProductView} />
+                <Route path=":productId/edit" component={ProductFormWrapper} />
+            </Route>
+            <Route path="stockmen" component={StockmanHome} />
+            <Route path="error" component={ErrorPage} />
             <Route path="*" component={StudentHome}/>
         </Route>
     </Router>

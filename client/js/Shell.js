@@ -18,12 +18,11 @@ export default React.createClass({
                 <Toast/>
                 <header className="menu" style={{backgroundColor:"#01344E", verticalAlign:"middle"}}>
                     <ul className="slds-list--horizontal">
-                        <li className="slds-list__item"><a href="#students"><Icon name="lead" theme={null}/>Students</a></li>
-                        <li className="slds-list__item"><a href="#courses"><Icon name="orders" theme={null}/>Courses</a></li>
-                        <li className="slds-list__item slds-m-right--xx-large"><a href="#teachers"><Icon name="user" theme={null}/>Teachers</a></li>
-                        <li className="slds-list__item slds-m-top--xx-small">
+                        <li className="menu-title-name">Supermarket Management System</li>
+                        <li className="slds-list__item"><a href="#students"><Icon name="lead" theme={null}/>Home</a></li>
+                        {/* <li className="slds-list__item slds-m-top--xx-small">
                             <StudentSearchBox onSelect={this.selectHandler}/>
-                        </li>
+                        </li> */}
                     </ul>
                 </header>
                 {this.props.children}
