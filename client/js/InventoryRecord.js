@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import cookie from 'react-cookie'
-import * as ProductService from './services/ProductService';
+import * as InventoryService from './services/InventoryService';
 import * as LoginUtils from './utils/LoginUtils';
 import * as Config from './utils/config';
 import {RecordHeader, HeaderField} from './components/PageHeader';
@@ -9,19 +9,19 @@ import {RecordHeader, HeaderField} from './components/PageHeader';
 export default React.createClass({
 
     getInitialState() {
-        if(!LoginUtils.checkIfAccessable(Config.SALESMAN_PAGE)){
+        if(!LoginUtils.checkIfAccessable(Config.STOCKMAN_PAGE)){
             history.pushState(null, '/error');
         }
-        return {product:{}};
+        return {inventory:{}};
     },
 
     componentDidMount() {
         console.log(this.props.params);
-        this.getProduct(this.props.params.productId);
+        this.getProduct(this.props.params.inventoryId);
     },
 
     componentWillReceiveProps(props) {
-        this.getProduct(props.params.productId);
+        this.getProduct(props.params.inventoryId);
     },
 
     getProduct(id) {

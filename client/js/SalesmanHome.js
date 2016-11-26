@@ -39,7 +39,7 @@ export default React.createClass({
     render() {
         return (
             <div>
-                <HomeHeaderWithoutButton type="Products"
+                <HomeHeaderWithoutButton type="Products" isInventory={false}
                             itemCount={this.state.products.length}/>
                 <ProductList products={this.state.products}/>
                 {/* {this.state.addingStudent?<StudentFormWindow onSaved={this.savedHandler} onCancel={this.cancelHandler}/>:null} */}

@@ -23,7 +23,7 @@ function clearLogin(){
 function isOnline(){
     var res = cookie.load('onlineStatus');
     var res2 = cookie.load('positionType');
-    return (res === null ? false: true) || (res2 === null ? false: true);
+    return (res === undefined ? false: true) && (res2 === undefined ? false: true);
 }
 
 function checkAccessable(targetPage){

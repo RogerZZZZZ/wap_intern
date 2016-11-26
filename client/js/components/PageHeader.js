@@ -5,6 +5,8 @@ import moment from 'moment';
 import {Icon, ButtonIcon} from "./Icons";
 import Dropdown from "./Dropdown";
 import {DropdownItem} from "./Dropdown";
+import ProductSearchBox from '../ProductSearchBox';
+import InventorySearchBox from '../InventorySearchBox';
 
 export let DownButtonDropdown = React.createClass({
 
@@ -268,6 +270,14 @@ export let HomeHeaderWithoutButton = React.createClass({
         }
     },
 
+    selectHandlerToProduct(index, value, label) {
+        window.location.hash = "salesman/" + value;
+    },
+
+    selectHandlerToInventory(index, value, label) {
+        window.location.hash = "stockman/" + value;
+    },
+
     render() {
         return (
             <div className="slds-page-header">
@@ -279,9 +289,19 @@ export let HomeHeaderWithoutButton = React.createClass({
                     <div className="slds-col">
                     </div>
                     <div className="slds-col slds-no-flex slds-align-bottom">
-                        <div className="slds-grid">
-                            
-                        </div>
+                            {this.props.isInventory === true?
+                                <div className="slds-grid">
+                                    <InventorySearchBox onSelect={this.selectHandlerToInventory} placeholder="Search..."/>
+                                    <div className="slds-button-group slds-button-space-left" role="group">
+                                        <button className="slds-button slds-button--neutral" onClick={this.props.onNew}>{this.props.newLabel}</button>
+                                    </div>
+                                </div>
+
+                                :
+                                <div className="slds-grid">
+                                    <ProductSearchBox onSelect={this.selectHandlerToProduct} placeholder="Search..."/>
+                                </div>
+                            }
                     </div>
                 </div>
                 <p className="slds-text-body--small slds-m-top--x-small">{this.props.itemCount} {this.props.type.toLowerCase()}</p>

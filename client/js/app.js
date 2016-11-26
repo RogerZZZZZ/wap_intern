@@ -22,6 +22,9 @@ import ProductRecord from './ProductRecord';
 import ProductView from './ProductView';
 import ProductFormWrapper from './ProductFormWrapper';
 import StockmanHome from './StockmanHome';
+import InventoryRecord from './InventoryRecord';
+import InventoryView from './InventoryView';
+import InventoryFormWrapper from './InventoryFormWrapper';
 import ErrorPage from './ErrorPage';
 
 render((
@@ -50,6 +53,10 @@ render((
                 <Route path=":productId/edit" component={ProductFormWrapper} />
             </Route>
             <Route path="stockmen" component={StockmanHome} />
+            <Route path="stockman" componenet={InventoryRecord}>
+                <Route path=":inventoryId" component={InventoryView} />
+                <Route path=":inventoryId/edit" component={InventoryFormWrapper} />
+            </Route>
             <Route path="error" component={ErrorPage} />
             <Route path="*" component={StudentHome}/>
         </Route>

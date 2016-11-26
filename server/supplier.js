@@ -4,18 +4,17 @@ let db = require('./pghelper');
 
 let findAll = (req, res, next) => {
     let name = req.query.name;
-    let supermarket_id = req.query.supermarket_id;
     let params = [];
     let sql;
     if (name) {
         sql = `
-            SELECT id, product_name FROM product
-            WHERE product_name LIKE $1 AND supermarket_id=$2 ORDER BY product_name`;
+            SELECT *
+            FROM supplier
+            WHERE supplier_name LIKE $1 ORDER BY supplier_name`;
         params.push("%" + name.toLowerCase() + "%");
     } else {
-        sql = `SELECT id, product_name, sale_price, cost_price FROM product WHERE supermarket_id=$1 ORDER BY product_name DESC`;
+        sql = `SELECT * FROM supplier`;
     }
-    params.push(parseInt(supermarket_id));
     db.query(sql, params)
         .then(result => res.json(result))
         .catch(next);
@@ -25,20 +24,22 @@ let findById = (req, res, next) => {
     let id = req.params.id;
     let supermarket_id = req.query.supermarket_id;
     // let supermarket_id = req.
-    let sql = "SELECT * FROM product WHERE id=$1 AND supermarket_id=$2";
+    let sql = `SELECT a.id, a.supermarket_id, b.product_name, c.supplier_name, a.inventory_sum
+            FROM inventory a,product b,supplier c
+            WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.id=$1 AND a.supermarket_id=$2`;
     db.query(sql, [parseInt(id), supermarket_id])
         .then(product =>  res.json(product[0]))
         .catch(next);
 };
 
 let createItem = (req, res, next) => {
-    let product = req.body;
+    let inventory = req.body;
     let sql = `
-        INSERT INTO student
-            (product_name, sale_price, cost_price, supermarket_id)
+        INSERT INTO inventory
+            (product_id, supplier_id, inventory_sum, supermarket_id)
         VALUES ($1,$2,$3,$4)
         RETURNING id`;
-    db.query(sql, [product.product_name, product.sale_price, product.cost_price, product.supermarket_id])
+    db.query(sql, [inventory.product_id, inventory.supplier_id, inventory.inventory_sum, inventory.supermarket_id])
         .then(result => {
             console.log(result);
             res.json(result[0])
@@ -47,17 +48,17 @@ let createItem = (req, res, next) => {
 };
 
 let updateItem = (req, res, next) => {
-    let product = req.body;
-    let sql = `UPDATE product SET product_name=$1, sale_price=$2, cost_price=$3 WHERE id=$4 AND supermarket_id=$5`;
-    db.query(sql, [product.product_name, product.sale_price, product.cost_price, product.id, product.supermarket_id])
+    let inventory = req.body;
+    let sql = `UPDATE inventory SET product_id=$1, supplier_id=$2, inventory_sum=$3 WHERE id=$4 AND supermarket_id=$5`;
+    db.query(sql, [inventory.product_id, inventory.supplier_id, inventory.inventory_sum, inventory.id, inventory.supermarket_id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };
 
 let deleteItem = (req, res, next) => {
-    let studentId = req.params.id;
+    let inventoryId = req.params.id;
     let supermarket_id = req.query.supermarket_id;
-    db.query('DELETE FROM student WHERE id=$1 AND supermarket_id=$2', [studentId, supermarket_id], true)
+    db.query('DELETE FROM inventory WHERE id=$1 AND supermarket_id=$2', [inventoryId, supermarket_id], true)
         .then(() =>res.send({result: 'ok'}))
         .catch(next);
 };

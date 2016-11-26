@@ -6,7 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {deepOrange500} from 'material-ui/styles/colors';
 import * as UserService from './services/UserService';
 import * as LoginUtils from './utils/LoginUtils';
-import browserHistory from 'react-router';
 import { createHashHistory } from 'history'
 
 const history = createHashHistory()

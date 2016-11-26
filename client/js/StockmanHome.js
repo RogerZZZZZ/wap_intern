@@ -1,28 +1,34 @@
 import React from 'react';
-
-import * as StudentService from './services/StudentService';
-
-import {HomeHeader} from './components/PageHeader';
-import StudentList from './StudentList';
-import StudentFormWindow from './StudentFormWindow';
-
+import * as InventoryService from './services/InventoryService';
+import cookie from 'react-cookie'
+import {HomeHeaderWithoutButton} from './components/PageHeader';
+import InventoryList from './InventoryList';
+import InventoryFormWindow from './InventoryFormWindow';
+import * as LoginUtils from './utils/LoginUtils';
+import * as Config from './utils/config';
+import { createHashHistory } from 'history'
+const history = createHashHistory();
 export default React.createClass({
 
     getInitialState() {
-        return {students: []};
+        if(!LoginUtils.checkIfAccessable(Config.STOCKMAN_PAGE)){
+            history.pushState(null, '/error');
+        }
+        return {inventory: []};
     },
 
     componentDidMount() {
-        StudentService.findAll().then(students => this.setState({students}));
+        let supermarket_id = cookie.load('supermarket_id');
+        InventoryService.findAll(supermarket_id).then(inventory => this.setState({inventory}));
     },
 
     newHandler() {
         this.setState({addingStudent:true});
     },
 
-    savedHandler(student) {
+    savedHandler(inventory) {
         this.setState({addingStudent: false});
-        window.location.hash = "#student/" + student.id;
+        window.location.hash = "#stockman/" + inventory.id;
     },
 
     cancelHandler() {
@@ -32,16 +38,12 @@ export default React.createClass({
     render() {
         return (
             <div>
-                <HomeHeader type="Students"
-                            title="Recent Students"
-                            newLabel="New Student"
-                            actions={[{value:"new", label:"New Student"}]}
-                            itemCount={this.state.students.length}
-                            views={[{id:1, name:"Recent Students"}]}
-                            viewId="1"
-                            onNew={this.newHandler}/>
-                <StudentList students={this.state.students}/>
-                {/* {this.state.addingStudent?<StudentFormWindow onSaved={this.savedHandler} onCancel={this.cancelHandler}/>:null} */}
+                <HomeHeaderWithoutButton type="Inventory" isInventory={true}
+                        newLabel="New Product"
+                        onNew={this.newHandler}
+                        itemCount={this.state.inventory.length}/>
+                <InventoryList inventory={this.state.inventory}/>
+                {this.state.addingStudent?<InventoryFormWindow onSaved={this.savedHandler} onCancel={this.cancelHandler}/>:null}
             </div>
         );
     }

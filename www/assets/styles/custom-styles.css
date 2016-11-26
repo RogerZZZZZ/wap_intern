@@ -68,3 +68,13 @@
     font-size: 20px;
     padding: 8px;
 }
+
+.menu-logout{
+    color: white;
+    font-size: 18px;
+    padding: 8px;
+    position: absolute;
+    float: right;
+    cursor: pointer;
+    right: 20px;
+}
