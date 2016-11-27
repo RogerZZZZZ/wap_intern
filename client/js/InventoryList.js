@@ -19,6 +19,7 @@ export default React.createClass({
         return (
             <DataGrid data={this.props.inventory}>
                 <div header="Name" field="product_name" onLink={this.linkHandler}/>
+                <div header="Product" field="type_name"/>
                 <div header="Supplier Name" field="supplier_name"/>
                 <div header="Inventory" field="inventory_sum"/>
             </DataGrid>

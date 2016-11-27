@@ -134,19 +134,19 @@
 	
 	var _StockmanHome2 = _interopRequireDefault(_StockmanHome);
 	
-	var _InventoryRecord = __webpack_require__(579);
+	var _InventoryRecord = __webpack_require__(580);
 	
 	var _InventoryRecord2 = _interopRequireDefault(_InventoryRecord);
 	
-	var _InventoryView = __webpack_require__(580);
+	var _InventoryView = __webpack_require__(581);
 	
 	var _InventoryView2 = _interopRequireDefault(_InventoryView);
 	
-	var _InventoryFormWrapper = __webpack_require__(581);
+	var _InventoryFormWrapper = __webpack_require__(582);
 	
 	var _InventoryFormWrapper2 = _interopRequireDefault(_InventoryFormWrapper);
 	
-	var _ErrorPage = __webpack_require__(582);
+	var _ErrorPage = __webpack_require__(583);
 	
 	var _ErrorPage2 = _interopRequireDefault(_ErrorPage);
 	
@@ -25138,7 +25138,7 @@
 	                    index: index,
 	                    key: item[_this.props.valueField] || item.id,
 	                    value: item[_this.props.valueField] || item.id,
-	                    label: item[_this.props.labelField] || item.name || item.product_name || item.supplier_name,
+	                    label: item[_this.props.labelField] || item.name || item.product_name || item.supplier_name || item.type_name,
 	                    onSelect: _this.props.onChange });
 	            });
 	        }
@@ -53156,6 +53156,7 @@
 	            _DataGrid2.default,
 	            { data: this.props.products },
 	            _react2.default.createElement('div', { header: 'Name', field: 'product_name', onLink: this.linkHandler }),
+	            _react2.default.createElement('div', { header: 'Product', field: 'type_name' }),
 	            _react2.default.createElement('div', { header: 'Sale Price', field: 'sale_price' }),
 	            _react2.default.createElement('div', { header: 'Cost Price', field: 'cost_price' })
 	        );
@@ -53592,6 +53593,7 @@
 	            _DataGrid2.default,
 	            { data: this.props.inventory },
 	            _react2.default.createElement('div', { header: 'Name', field: 'product_name', onLink: this.linkHandler }),
+	            _react2.default.createElement('div', { header: 'Product', field: 'type_name' }),
 	            _react2.default.createElement('div', { header: 'Supplier Name', field: 'supplier_name' }),
 	            _react2.default.createElement('div', { header: 'Inventory', field: 'inventory_sum' })
 	        );
@@ -53700,6 +53702,14 @@
 	
 	var SupplierService = _interopRequireWildcard(_SupplierService);
 	
+	var _ProductTypeService = __webpack_require__(579);
+	
+	var ProductTypeService = _interopRequireWildcard(_ProductTypeService);
+	
+	var _reactCookie = __webpack_require__(217);
+	
+	var _reactCookie2 = _interopRequireDefault(_reactCookie);
+	
 	var _ComboBox = __webpack_require__(540);
 	
 	var _ComboBox2 = _interopRequireDefault(_ComboBox);
@@ -53711,7 +53721,8 @@
 	exports.default = _react2.default.createClass({
 	    displayName: 'InventoryForm',
 	    getInitialState: function getInitialState() {
-	        return { inventory: {}, supplier: [] };
+	        var supermarket_id = _reactCookie2.default.load('supermarket_id');
+	        return { inventory: { supermarket_id: supermarket_id }, supplier: [], product_type: [] };
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(props) {
 	        var inventory = props.inventory;
@@ -53722,6 +53733,9 @@
 	
 	        SupplierService.findAll().then(function (supplier) {
 	            return _this.setState({ supplier: supplier });
+	        });
+	        ProductTypeService.findAll().then(function (product_type) {
+	            return _this.setState({ product_type: product_type });
 	        });
 	    },
 	    nameChangeHandler: function nameChangeHandler(event) {
@@ -53734,13 +53748,22 @@
 	        inventory.cost_price = event.target.value;
 	        this.setState({ inventory: inventory });
 	    },
+	    sellPriceChangeHandler: function sellPriceChangeHandler(event) {
+	        var inventory = this.state.inventory;
+	        inventory.sell_price = event.target.value;
+	        this.setState({ inventory: inventory });
+	    },
 	    supplierChangeHandler: function supplierChangeHandler(index, value, label) {
 	        var inventory = this.state.inventory;
 	        inventory.supplier_id = value;
 	        this.setState({ inventory: inventory });
-	        console.log(this.state.inventory);
 	    },
-	    inventoryChangeHandler: function inventoryChangeHandler(index, value, label) {
+	    typeChangeHandler: function typeChangeHandler(index, value, label) {
+	        var inventory = this.state.inventory;
+	        inventory.type_id = value;
+	        this.setState({ inventory: inventory });
+	    },
+	    inventoryChangeHandler: function inventoryChangeHandler(event) {
 	        var inventory = this.state.inventory;
 	        inventory.inventory_sum = event.target.value;
 	        this.setState({ inventory: inventory });
@@ -53781,12 +53804,12 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Cost Price'
+	                        'Supplier'
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: inventory.cost_price, onChange: this.costPriceChangeHandler })
+	                        _react2.default.createElement(_ComboBox2.default, { data: this.state.supplier, value: inventory.supplier_id, onChange: this.supplierChangeHandler, labelField: 'supplier_name' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -53795,12 +53818,12 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
-	                        'Supplier'
+	                        'Cost'
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'slds-form-element__control' },
-	                        _react2.default.createElement(_ComboBox2.default, { data: this.state.supplier, value: inventory.supplier_id, onChange: this.supplierChangeHandler })
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: inventory.cost_price, onChange: this.costPriceChangeHandler })
 	                    )
 	                )
 	            ),
@@ -53819,6 +53842,34 @@
 	                        'div',
 	                        { className: 'slds-form-element__control' },
 	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: inventory.inventory_sum, onChange: this.inventoryChangeHandler })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Type of Product'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-form-element__control' },
+	                        _react2.default.createElement(_ComboBox2.default, { data: this.state.product_type, value: inventory.type_id, onChange: this.typeChangeHandler, labelField: 'type_name' })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'slds-form-element' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { className: 'slds-form-element__label', htmlFor: 'sample1' },
+	                        'Sell Price'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'slds-form-element__control' },
+	                        _react2.default.createElement('input', { className: 'slds-input', type: 'text', value: inventory.sell_price, onChange: this.sellPriceChangeHandler })
 	                    )
 	                )
 	            )
@@ -53871,6 +53922,29 @@
 
 /***/ },
 /* 579 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(212);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var url = "/producttype";
+	
+	var findAll = exports.findAll = function findAll(sort) {
+	  return rest.get(url, { sort: sort });
+	};
+
+/***/ },
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53960,12 +54034,6 @@
 	});
 
 /***/ },
-/* 580 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-/***/ },
 /* 581 */
 /***/ function(module, exports) {
 
@@ -53973,6 +54041,12 @@
 
 /***/ },
 /* 582 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+/***/ },
+/* 583 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

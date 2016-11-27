@@ -4,13 +4,13 @@ drop table IF EXISTS student;
 drop table IF EXISTS teacher;
 drop table IF EXISTS period;
 drop table IF EXISTS inventory;
-drop table IF EXISTS bill;
 drop table IF EXISTS staff;
-drop table IF EXISTS product;
 drop table IF EXISTS supplier;
-drop table IF EXISTS supermarket;
-
 drop table IF EXISTS billdetail;
+drop table IF EXISTS bill;
+drop table IF EXISTS product;
+drop table IF EXISTS supermarket;
+drop table IF EXISTS producttype;
 
 CREATE TABLE IF NOT EXISTS student (
     id              SERIAL PRIMARY KEY,
@@ -77,11 +77,18 @@ CREATE TABLE IF NOT EXISTS enrollment (
     supermarket_id  integer REFERENCES supermarket(id) ON DELETE CASCADE
   );
 
+  CREATE TABLE IF NOT EXISTS producttype (
+      id              SERIAL PRIMARY KEY,
+      type_name            TEXT,
+      position_id     integer
+  );
+
   CREATE TABLE IF NOT EXISTS product (
       id                 SERIAL PRIMARY KEY,
       product_name       TEXT,
       sale_price         NUMERIC,
       cost_price         NUMERIC,
+      type_id           integer REFERENCES producttype(id) ON DELETE CASCADE,
       supermarket_id  integer REFERENCES supermarket(id) ON DELETE CASCADE
   );
 
@@ -93,9 +100,9 @@ CREATE TABLE IF NOT EXISTS enrollment (
       email              TEXT
   );
 
+
   CREATE TABLE IF NOT EXISTS bill (
       id                 SERIAL PRIMARY KEY,
-      product_list       TEXT,
       bill_amount        NUMERIC,
       create_date        TIMESTAMP default current_timestamp
     );
@@ -105,6 +112,7 @@ CREATE TABLE IF NOT EXISTS inventory (
   product_id         integer REFERENCES product(id) ON DELETE CASCADE,
   supplier_id        integer REFERENCES supplier(id) ON DELETE CASCADE,
   inventory_sum      integer,
+  type_id            integer REFERENCES producttype(id) ON DELETE CASCADE,
   supermarket_id     integer REFERENCES supermarket(id) ON DELETE CASCADE
 );
 
@@ -113,6 +121,7 @@ CREATE TABLE IF NOT EXISTS billdetail (
     product_id         integer REFERENCES product(id) ON DELETE CASCADE,
     bill_id            integer REFERENCES bill(id) ON DELETE CASCADE,
     bill_amount        NUMERIC,
+    cost_amount         NUMERIC,
     create_date        TIMESTAMP default current_timestamp
 );
 
@@ -122,45 +131,141 @@ INSERT INTO supermarket (address) VALUES
 ('HKUST'),
 ('bupt');
 
+INSERT INTO producttype (type_name, position_id) VALUES
+('Sea Products', 1),
+('Drinks', 2),
+('Instant Foods', 3),
+('Electrics', 4),
+('Clothes', 5),
+('Commodity', 6),
+('Bread', 7),
+('Fruits', 8);
 
-INSERT INTO product (product_name, sale_price, cost_price, supermarket_id) VALUES
-('coke 2L', 10, 8, 2),
-('coke 300ml', 3, 2.5, 2),
-('iPhone', 5000, 4500, 2),
-('Mac air', 6000, 5000, 2),
-('Mac pro', 10000, 9250, 2),
-('iMac', 5999, 5499, 2),
-('samsung Note7', 5899, 5699, 2),
-('cafe', 24, 22.5, 2),
-('bread', 5, 4.3, 2),
-('pen', 2, 1.1, 2),
-('bottle', 15, 10.2, 2),
-('bag', 199, 178.9, 2),
-('paper', 18, 16.3, 2),
-('earphone', 299, 278, 2),
-('mouse', 149, 130.7, 2);
+INSERT INTO bill (bill_amount) VALUES
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+();
+
+INSERT INTO billdetail (product_id, bill_id, bill_amount, cost_amount) VALUES
+(1,1),
+(3,1),
+(5,1),
+(7,1),
+(9,1),
+(13,1),
+
+(5,2),
+(6,2),
+(7,2),
+
+(16,3),
+(13,3),
+(11,3),
+(15,3),
+(3,3),
+(2,3),
+(18,3),
+(19,3),
+(20,3),
+
+(),
+(),
+(),
+(),
+(),
+(),
+
+(),
+(),
+
+(),
+(),
+(),
+(),
+
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+
+(),
+(),
+(),
+
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+(),
+
+(),
+();
+
+INSERT INTO product (product_name, sale_price, cost_price, supermarket_id, type_id) VALUES
+('coke 2L', 10, 8, 2, 2),
+('coke 300ml', 3, 2.5, 2, 2),
+('iPhone', 5000, 4500, 2, 4),
+('Mac air', 6000, 5000, 2, 4),
+('Mac pro', 10000, 9250, 2, 4),
+('iMac', 5999, 5499, 2, 4),
+('samsung Note7', 5899, 5699, 2, 4),
+('cafe', 24, 22.5, 2, 2),
+('bread', 5, 4.3, 2, 7),
+('pen', 2, 1.1, 2, 6),
+('bottle', 15, 10.2, 2, 6),
+('bag', 199, 178.9, 2, 5),
+('paper', 18, 16.3, 2, 6),
+('pants', 199, 132, 2, 5),
+('jaket', 179, 130, 2, 5),
+('apple', 5, 4, 2, 8),
+('peach', 8, 6, 2, 8),
+('earphone', 299, 278, 2, 4),
+('toast', 10, 6, 2, 7),
+('mouse', 149, 130.7, 2, 4);
 
 INSERT INTO supplier (supplier_name, address, phone, email) VALUES
 ('walmart', 'Beijing Road', '123123123', '123@gmail.com'),
 ('super supplier', 'ShangHai Road', '234-996', '234@gmail.com'),
 ('apple supplier', 'XiAn Road', '475-658', '367@gmail.com');
 
-INSERT INTO inventory (product_id, supplier_id, inventory_sum, supermarket_id) VALUES
-(1, 1, 538, 2),
-(2, 1, 99, 2),
-(3, 2, 123, 2),
-(4, 3, 87, 2),
-(5, 3, 876, 2),
-(6, 1, 67, 2),
-(7, 2, 10, 2),
-(8, 1, 13, 2),
-(9, 1, 200, 2),
-(10, 2, 343, 2),
-(11, 2, 65, 2),
-(12, 3, 123, 2),
-(13, 1, 43, 2),
-(14, 3, 654, 2),
-(15, 2, 98, 2);
+INSERT INTO inventory (product_id, supplier_id, inventory_sum, supermarket_id, type_id) VALUES
+(1, 1, 538, 2, 2),
+(2, 1, 99, 2, 2),
+(3, 2, 123, 2, 4),
+(4, 3, 87, 2, 4),
+(5, 3, 876, 2, 4),
+(6, 1, 67, 2, 4),
+(7, 2, 10, 2, 4),
+(8, 1, 13, 2, 2),
+(9, 1, 200, 2, 7),
+(10, 2, 343, 2, 6),
+(11, 2, 65, 2, 6),
+(12, 3, 123, 2, 5),
+(13, 1, 43, 2, 6),
+(14, 3, 654, 2, 5),
+(15, 2, 343, 2, 5),
+(16, 2, 65, 2, 8),
+(17, 3, 123, 2, 8),
+(18, 1, 43, 2, 4),
+(19, 3, 654, 2, 7),
+(20, 2, 98, 2, 4);
 
 INSERT INTO staff (username, password, position_type, supermarket_id) VALUES
 ('manager', '123456', 1, 2),

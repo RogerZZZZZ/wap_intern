@@ -13,7 +13,7 @@ let findAll = (req, res, next) => {
             WHERE product_name LIKE $1 AND supermarket_id=$2 ORDER BY product_name`;
         params.push("%" + name.toLowerCase() + "%");
     } else {
-        sql = `SELECT id, product_name, sale_price, cost_price FROM product WHERE supermarket_id=$1 ORDER BY product_name DESC`;
+        sql = `SELECT a.id, a.product_name, a.sale_price, a.cost_price, b.type_name FROM product a, producttype b WHERE supermarket_id=$1 AND a.type_id=b.id ORDER BY product_name DESC`;
     }
     params.push(parseInt(supermarket_id));
     db.query(sql, params)

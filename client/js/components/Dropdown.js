@@ -41,7 +41,7 @@ export default React.createClass({
                     index={index}
                     key={item[this.props.valueField] || item.id}
                     value={item[this.props.valueField] || item.id}
-                    label={item[this.props.labelField] || item.name || item.product_name || item.supplier_name }
+                    label={item[this.props.labelField] || item.name || item.product_name || item.supplier_name || item.type_name}
                     onSelect={this.props.onChange}/>);
         }
         let className = "slds-dropdown slds-dropdown--menu";

@@ -14,9 +14,9 @@ let findAll = (req, res, next) => {
             WHERE a.product_id=b.id AND a.supplier_id=c.id AND b.product_name LIKE $1 AND a.supermarket_id=$2 ORDER BY product_name`;
         params.push("%" + name.toLowerCase() + "%");
     } else {
-        sql = `SELECT a.id,b.product_name,c.supplier_name,a.inventory_sum
-                FROM inventory a,product b,supplier c
-                WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.supermarket_id=$1 ORDER BY product_name DESC`;
+        sql = `SELECT a.id,b.product_name,c.supplier_name,a.inventory_sum,d.type_name
+                FROM inventory a,product b,supplier c, producttype d
+                WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.supermarket_id=$1 AND a.type_id=d.id ORDER BY product_name DESC`;
     }
     params.push(parseInt(supermarket_id));
     db.query(sql, params)
@@ -40,13 +40,22 @@ let createItem = (req, res, next) => {
     let inventory = req.body;
     let sql = `
         INSERT INTO inventory
-            (product_id, supplier_id, inventory_sum, supermarket_id)
-        VALUES ($1,$2,$3,$4)
+            (product_id, supplier_id, inventory_sum, supermarket_id, type_id)
+        VALUES ($1,$2,$3,$4,$5)
         RETURNING id`;
-    db.query(sql, [inventory.product_id, inventory.supplier_id, inventory.inventory_sum, inventory.supermarket_id])
+    let sql1 = `
+        INSERT INTO product (product_name, sale_price, cost_price, supermarket_id, type_id)
+        VALUES ($1,$2,$3,$4,$5)
+        RETURNING id`;
+
+    db.query(sql1, [inventory.product_name, inventory.sell_price, inventory.cost_price, inventory.supermarket_id, inventory.type_id])
         .then(result => {
-            console.log(result);
-            res.json(result[0])
+            var productId = result[0].id;
+            db.query(sql, [productId, inventory.supplier_id, inventory.inventory_sum, inventory.supermarket_id, inventory.type_id])
+                .then(result => {
+                    res.json(result[0])
+                })
+                .catch(next);
         })
         .catch(next);
 };
