@@ -31,8 +31,8 @@ IndoorMap2d = function(mapdiv){
     //var _marker;
 
     this.init = function(){
-        _this.containerSize[0] = parseInt(_mapDiv.style.width);
-        _this.containerSize[1] = parseInt(_mapDiv.style.height);
+        _this.containerSize[0] = parseInt(1000);
+        _this.containerSize[1] = parseInt(600);
         _this.containerHalfSize[0] = _this.containerSize[0] / 2;
         _this.containerHalfSize[1] = _this.containerSize[1] / 2;
         _this.containerPos = IDM.DomUtil.getPos(_mapDiv);
@@ -670,8 +670,8 @@ Canvas2DRenderer = function (map) {
     }
 
     this.setSize = function(width, height) {
-        _canvas.style.width = width + "px";
-        _canvas.style.height = height + "px";
+        _canvas.style.width = 1000 + "px";
+        _canvas.style.height = 600 + "px";
         _canvasSize[0] = width * _devicePixelRatio;
         _canvasSize[1] = height * _devicePixelRatio;
         _canvas.width = _canvasSize[0];

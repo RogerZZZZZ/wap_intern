@@ -88,14 +88,23 @@
 }
 
 .map{
-    width: 800px;
+    width: 1000px;
     height: 600px;
+    position: relative;
+    top:0px;
+    left: 50%;
+    margin-left: -500px;
 }
 
-.3d-map{
-    width: 800px;
+.map-3d{
+    width: 1000px;
     height: 500px;
     top:0px;
-    left: 0px;
+    left: 50%;
+    margin-left: -500px;
     position: absolute;
+}
+
+.map_container{
+    position: relative;
 }

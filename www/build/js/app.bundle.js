@@ -37814,7 +37814,7 @@
 	                var positionType = type[0].position_type;
 	                var supermarket_id = type[0].supermarket_id;
 	                LoginUtils.setLoginStatus(positionType, supermarket_id);
-	                if (positionType == 1) {
+	                if (positionType === 1) {
 	                    //manager
 	                    self.forwardTo('/managers');
 	                } else if (positionType === 2) {
@@ -54630,6 +54630,8 @@
 	    value: true
 	});
 	
+	var _map3DParams;
+	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -54650,27 +54652,68 @@
 	
 	var CommandService = _interopRequireWildcard(_CommandService);
 	
+	var _MuiThemeProvider = __webpack_require__(344);
+	
+	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+	
+	var _RaisedButton = __webpack_require__(431);
+	
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+	
+	var _colors = __webpack_require__(275);
+	
+	var _getMuiTheme = __webpack_require__(216);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var map2DParams = {
+	    mapDiv: 'map',
+	    dim: "2d"
+	};
+	
+	var map3DParams = (_map3DParams = {
+	    mapDiv: 'map'
+	}, _defineProperty(_map3DParams, 'mapDiv', "indoor3d"), _defineProperty(_map3DParams, 'dim', "2d"), _map3DParams);
+	
+	var muiTheme = (0, _getMuiTheme2.default)({
+	    palette: {
+	        accent1Color: _colors.deepOrange500
+	    }
+	});
+	
 	exports.default = _react2.default.createClass({
 	    displayName: 'ManagerHome',
+	
+	    childContextTypes: {
+	        muiTheme: _react2.default.PropTypes.object.isRequired
+	    },
+	
 	    getInitialState: function getInitialState() {
 	        if (!LoginUtils.checkIfAccessable(Config.MANAGER_PAGE)) {
 	            history.pushState(null, '/error');
 	        }
-	        return { command: [] };
+	        //mapType: 0-2D, 1-3D
+	        return { command: [], showMap: 0 };
+	    },
+	    showMap: function showMap() {
+	        if (this.state.showMap === 1) {
+	            this.setState({ showMap: 0 });
+	        } else {
+	            this.setState({ showMap: 1 });
+	        }
 	    },
 	    componentDidMount: function componentDidMount() {
 	        if (!LoginUtils.isLogin()) return '#login';
-	        // this.getNotification();
-	        var params = {
-	            mapDiv: "indoor3d",
-	            dim: "3d"
-	        };
-	        var indoorMap = IndoorMap(params);
-	
+	        if (this.state.showMap === 1) this.loadMap(this.state.mapType);
+	    },
+	    loadMap: function loadMap(type) {
+	        var indoorMap = IndoorMap(map2DParams);
 	        var testjson;
 	        var loader = new IndoorMapLoader(indoorMap.is3d);
 	        loader.load('../../assets/supermarket.json', function (mall) {
@@ -54683,11 +54726,7 @@
 	                console.log(res);
 	            });
 	            indoorMap.selectById(1);
-	
-	            var ul = IndoorMap.getUI(indoorMap);
-	            document.getElementById('map').appendChild(ul);
 	        });
-	        requestAnimationFrame();
 	    },
 	    getNotification: function getNotification() {
 	        var _this = this;
@@ -54699,31 +54738,22 @@
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement('div', { id: 'map', className: 'map' }),
-	            _react2.default.createElement('div', { id: 'indoor3d', className: '3d-map' }),
+	            _MuiThemeProvider2.default,
+	            { muiTheme: muiTheme },
 	            _react2.default.createElement(
 	                'div',
-	                { className: 'testButton' },
+	                { className: 'manager_wrap' },
+	                this.state.showMap == 1 ? _react2.default.createElement(
+	                    'div',
+	                    { className: 'map_container' },
+	                    _react2.default.createElement('div', { id: 'map', className: 'map' }),
+	                    _react2.default.createElement('div', { id: 'indoor3d', className: 'map-3d' })
+	                ) : null,
 	                _react2.default.createElement(
-	                    'ul',
-	                    null,
-	                    _react2.default.createElement(
-	                        'li',
-	                        { onclick: 'indoorMap.zoomIn(1.2)' },
-	                        'Zoom In'
-	                    ),
-	                    _react2.default.createElement(
-	                        'li',
-	                        { onclick: 'indoorMap.zoomOut(0.8)' },
-	                        'Zoom Out'
-	                    ),
-	                    _react2.default.createElement(
-	                        'li',
-	                        { onclick: 'indoorMap.setDefaultView()' },
-	                        'Default View'
-	                    )
+	                    'div',
+	                    { className: 'button-group' },
+	                    _react2.default.createElement(_RaisedButton2.default, { className: 'login-button', onClick: this.showMap, label: 'Toggle Map', primary: true }),
+	                    _react2.default.createElement(_RaisedButton2.default, { className: 'login-button', label: 'Check', primary: true })
 	                )
 	            )
 	        );

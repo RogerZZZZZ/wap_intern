@@ -35,7 +35,7 @@ export default React.createClass({
                 let positionType = type[0].position_type;
                 let supermarket_id = type[0].supermarket_id;
                 LoginUtils.setLoginStatus(positionType, supermarket_id);
-                if(positionType == 1){
+                if(positionType === 1){
                     //manager
                     self.forwardTo('/managers');
                 }else if(positionType === 2){
