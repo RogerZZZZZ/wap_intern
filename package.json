@@ -10,7 +10,7 @@
     "webpack": "webpack",
     "start": "node server.js"
   },
-  "author": "Christophe Coenraets <ccoenraets@gmail.com> (http://coenraets.org/)",
+  "author": "Roger Luo <rogerjluo5@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.3.13",

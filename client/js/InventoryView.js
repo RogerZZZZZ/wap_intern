@@ -1,7 +1,5 @@
 import React from 'react';
 
-import CourseEnrollmentCard from "./CourseEnrollmentCard";
-
 export default React.createClass({
 
     render() {
@@ -20,7 +18,6 @@ export default React.createClass({
                     </dl>
                 </div>
             </div>
-            {/* <CourseEnrollmentCard course={course}/> */}
         </div>
         );
     }

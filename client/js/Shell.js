@@ -3,7 +3,6 @@ import React from 'react';
 import Spinner from './components/Spinner';
 import Toast from './components/Toast';
 import {Icon} from './components/Icons';
-import StudentSearchBox from './StudentSearchBox';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {deepOrange500} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
