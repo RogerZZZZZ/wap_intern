@@ -14,6 +14,8 @@ import InventoryRecord from './InventoryRecord';
 import InventoryView from './InventoryView';
 import InventoryFormWrapper from './InventoryFormWrapper';
 import CommandHome from './CommandHome';
+import ShelfView from './ShelfView';
+import ShelfView3D from './ShelfView3D';
 import ErrorPage from './ErrorPage';
 
 render((
@@ -35,6 +37,8 @@ render((
             </Route>
             <Route path="command" component={CommandHome} />
             <Route path="error" component={ErrorPage} />
+            <Route path="shelfView/:shelfId" component={ShelfView} />
+            <Route path="shelfView3D/:shelfId" component={ShelfView3D} />
             <Route path="*" component={LoginView}/>
         </Route>
     </Router>

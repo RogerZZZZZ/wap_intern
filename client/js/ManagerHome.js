@@ -7,6 +7,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import {deepOrange500} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import * as ShelfService from './services/ShelfService';
+import ExpiredList from './ExpiredList';
+import ShelfStatus from './ShelfStatus';
+import InventoryStatus from './InventoryStatus';
 
 const map2DParams = {
     mapDiv: 'map',
@@ -35,37 +39,19 @@ export default React.createClass({
             history.pushState(null, '/error');
         }
         //mapType: 0-2D, 1-3D
-        return {command: [], showMap: 0}
+        return {expired: [], shelf: [], inventory: []}
     },
 
-    showMap(){
-        if(this.state.showMap === 1){
-            this.setState({showMap: 0});
-        }else{
-            this.setState({showMap: 1});
-        }
+    getCommand(){
+        let self = this;
+        ShelfService.findExpiredProduct().then(expired => self.setState({expired}));
+        ShelfService.checkShelfStatus().then(shelf => self.setState({shelf}));
+        ShelfService.checkInventoryStatus().then(inventory => self.setState({inventory}));
     },
 
     componentDidMount() {
         if(!LoginUtils.isLogin()) return '#login';
-        if(this.state.showMap === 1) this.loadMap(this.state.mapType);
-    },
-
-    loadMap(type){
-        var indoorMap = IndoorMap(map2DParams);
-        var testjson;
-        var loader = new IndoorMapLoader(indoorMap.is3d);
-        loader.load('../../assets/supermarket.json', function(mall){
-            testjson = mall.jsonData;
-            indoorMap.parse(testjson);
-            indoorMap.showFloor(1);
-            indoorMap.showPubPoints(true);
-            indoorMap.setSelectable(true);
-            indoorMap.setSelectionListener(function(res){
-                console.log(res);
-            })
-            indoorMap.selectById(1);
-        });
+        this.getCommand();
     },
 
     getNotification() {
@@ -74,23 +60,26 @@ export default React.createClass({
     },
 
     render() {
+        let rows1, rows2, rows3;
+        if (this.state.expired) {
+            rows1 = this.state.expired.map(item => <ExpiredList data={item} />);
+        }
+        if (this.state.inventory) {
+            rows2 = this.state.inventory.map(item => <InventoryStatus data={item} />);
+        }
+        if (this.state.shelf) {
+            rows3 = this.state.shelf.map(item => <ShelfStatus data={item} />);
+        }
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
             <div className="manager_wrap">
-            {this.state.showMap==1 ?
-                <div className="map_container" >
-                    <div id="map" className="map"></div>
-                    <div id="indoor3d" className="map-3d" ></div>
-                </div>:null
-            }
-            <div className="button-group">
-                <RaisedButton className="login-button" onClick={this.showMap} label="Toggle Map" primary={true}/>
-                <RaisedButton className="login-button" label="Check" primary={true}/>
-            </div>
+                <div>
+                    {rows1}
+                    {rows2}
+                    {rows3}
+                </div>
             </div>
             </MuiThemeProvider>
-
-
         );
     }
 

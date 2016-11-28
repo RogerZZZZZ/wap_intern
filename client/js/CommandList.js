@@ -20,17 +20,15 @@ export default React.createClass({
         return {muiTheme: getMuiTheme()};
     },
 
-    courseLinkHandler(course) {
-        window.location.hash = "#course/" + course.id;
-    },
-
-    teacherLinkHandler(course) {
-        window.location.hash = "#teacher/" + course.teacher_id;
+    goToMap(){
+        window.location.hash = "#shelfView/" + this.props.data.position_id;
     },
 
     completeMission(){
         let item = this.props.data;
-        CommandService.handlerTask(item.id, item.product_id, item.type_id, Math.abs(item.amount-item.threshold));
+        CommandService.handlerTask(item.id, item.product_id, item.type_id, Math.abs(item.amount-item.threshold)).then(() => {
+            window.location.reload();
+        });
     },
 
     render() {
@@ -59,6 +57,7 @@ export default React.createClass({
                 </CardText>
                 <CardActions>
                   <FlatButton label="Handler It!" onClick={this.completeMission}/>
+                  <FlatButton label="Map" onClick={this.goToMap}/>
                 </CardActions>
             </Card>
             </MuiThemeProvider>

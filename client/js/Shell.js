@@ -94,13 +94,15 @@ export default React.createClass({
                             :
                             <li className="menu-logout" onClick={this.logout}>Login</li>
                         }
-                        <li className="slds-list__item">
-                            <Badge badgeContent={this.state.command.length} secondary={true} badgeStyle={{top: 6, left: 30}} style={badgeStyle} onClick={this.switchToCommand}>
-                                <IconButton tooltip="Notifications" style={iconButtonStyle}>
-                                    <NotificationsIcon style={notificationStyle}/>
-                                </IconButton>
-                            </Badge>
-                        </li>
+                        {(LoginUtils.whoIsOnline() === 2 || LoginUtils.whoIsOnline() === 3) ?
+                            <li className="slds-list__item">
+                                <Badge badgeContent={this.state.command.length} secondary={true} badgeStyle={{top: 6, left: 30}} style={badgeStyle} onClick={this.switchToCommand}>
+                                    <IconButton tooltip="Notifications" style={iconButtonStyle}>
+                                        <NotificationsIcon style={notificationStyle}/>
+                                    </IconButton>
+                                </Badge>
+                            </li>: null
+                        }
                     </ul>
                 </header>
                 </MuiThemeProvider>

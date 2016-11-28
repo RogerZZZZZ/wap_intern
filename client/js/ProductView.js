@@ -1,4 +1,5 @@
 import React from 'react';
+import SalesChart from './components/SalesChart';
 
 export default React.createClass({
 
@@ -18,6 +19,7 @@ export default React.createClass({
                     </dl>
                 </div>
             </div>
+            <SalesChart productId={product.id} />
         </div>
         );
     }

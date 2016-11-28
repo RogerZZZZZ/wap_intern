@@ -6,6 +6,8 @@ var express = require('express'),
     inventory = require('./server/inventory'),
     supplier = require('./server/supplier'),
     command = require('./server/command'),
+    shelf = require('./server/shelf'),
+    sales = require('./server/sales'),
     producttype = require('./server/producttype'),
     sqlinit = require('./server/sqlinit'),
     app = express();
@@ -39,6 +41,14 @@ app.get('/producttype', producttype.findAll);
 app.get('/command', command.findAll);
 app.put('/command', command.updateItem);
 app.get('/command/:id', command.handlerTask);
+app.post('/command', command.createItem);
+
+app.get('/shelf', shelf.findExpiredProduct);
+app.post('/shelf', shelf.checkInventoryStatus);
+app.put('/shelf', shelf.checkShelfStatus);
+app.get('/shelf/:id', shelf.getProducts);
+
+app.get('/sales', sales.findSales);
 
 app.use(function(err, req, res, next) {
     console.error(err.stack);

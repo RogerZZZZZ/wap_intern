@@ -35,7 +35,7 @@ let handlerTask = (req, res, next) => {
                     .catch(next);
             })
             .catch(next);
-    }else if(type === 2){
+    }else if(type === 2 || type === 3){
         let sql = `UPDATE command SET status=0 WHERE id=$1`;
         db.query(sql, [id])
             .then(product =>  res.json(product[0]))
@@ -43,20 +43,16 @@ let handlerTask = (req, res, next) => {
     }else if(type === 3){
 
     }
-    // let sql = "SELECT * FROM product WHERE id=$1 AND supermarket_id=$2";
-    // db.query(sql, [parseInt(id), supermarket_id])
-    //     .then(product =>  res.json(product[0]))
-    //     .catch(next);
 };
 
 let createItem = (req, res, next) => {
-    let product = req.body;
+    let command = req.body;
     let sql = `
-        INSERT INTO student
-            (product_name, sale_price, cost_price, supermarket_id)
-        VALUES ($1,$2,$3,$4)
+        INSERT INTO command
+            (from_id, to_id, content, type_id, product_id, status)
+        VALUES ($1,$2,$3,$4,$5,1)
         RETURNING id`;
-    db.query(sql, [product.product_name, product.sale_price, product.cost_price, product.supermarket_id])
+    db.query(sql, [command.from_id, command.to_id, command.content, command.type_id, command.product_id])
         .then(result => {
             console.log(result);
             res.json(result[0])
