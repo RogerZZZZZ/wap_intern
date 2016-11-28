@@ -59,6 +59,12 @@ export default React.createClass({
         this.setState({inventory});
     },
 
+    autoChangeHandler(event) {
+        let inventory = this.state.inventory;
+        inventory.auto_stock = event.target.value;
+        this.setState({inventory});
+    },
+
     save() {
         let saveItem = this.state.inventory.id ? InventoryService.updateItem : InventoryService.createItem;
         saveItem(this.state.inventory).then(saveInventory => {
@@ -83,12 +89,20 @@ export default React.createClass({
                             <ComboBox data={this.state.supplier} value={inventory.supplier_id} onChange={this.supplierChangeHandler} labelField="supplier_name"/>
                         </div>
                     </div>
-                    <div className="slds-form-element">
-                        <label className="slds-form-element__label" htmlFor="sample1">Cost</label>
-                        <div className="slds-form-element__control">
-                            <input className="slds-input" type="text" value={inventory.cost_price} onChange={this.costPriceChangeHandler}/>
+                    {this.state.inventory.id ?
+                        <div className="slds-form-element">
+                            <label className="slds-form-element__label" htmlFor="sample1">Auto Stock(True:1, False:0)</label>
+                            <div className="slds-form-element__control">
+                                <input className="slds-input" type="text" value={inventory.auto_stock} onChange={this.autoChangeHandler}/>
+                            </div>
+                        </div>:
+                        <div className="slds-form-element">
+                            <label className="slds-form-element__label" htmlFor="sample1">Cost</label>
+                            <div className="slds-form-element__control">
+                                <input className="slds-input" type="text" value={inventory.cost_price} onChange={this.costPriceChangeHandler}/>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
                 <div className="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2">
                     <div className="slds-form-element">
@@ -103,12 +117,16 @@ export default React.createClass({
                             <ComboBox data={this.state.product_type} value={inventory.type_id} onChange={this.typeChangeHandler} labelField="type_name"/>
                         </div>
                     </div>
-                    <div className="slds-form-element">
-                        <label className="slds-form-element__label" htmlFor="sample1">Sell Price</label>
-                        <div className="slds-form-element__control">
-                            <input className="slds-input" type="text" value={inventory.sell_price} onChange={this.sellPriceChangeHandler}/>
+                    {this.state.inventory.id ?
+                        null:
+                        <div className="slds-form-element">
+                            <label className="slds-form-element__label" htmlFor="sample1">Sell Price</label>
+                            <div className="slds-form-element__control">
+                                <input className="slds-input" type="text" value={inventory.sell_price} onChange={this.sellPriceChangeHandler}/>
+                            </div>
                         </div>
-                    </div>
+                    }
+
                 </div>
             </div>
         );

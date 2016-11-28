@@ -16,7 +16,6 @@ export default React.createClass({
     },
 
     componentDidMount() {
-        console.log(this.props.params);
         this.getProduct(this.props.params.inventoryId);
     },
 
@@ -26,30 +25,31 @@ export default React.createClass({
 
     getProduct(id) {
         let supermarket_id = cookie.load('supermarket_id');
-        ProductService.findById(id, supermarket_id).then(product => this.setState({product}));
+        InventoryService.findById(id, supermarket_id).then(inventory => this.setState({inventory}));
     },
 
     deleteHandler() {
-        ProductService.deleteItem(this.state.product.id).then(() => window.location.hash = "salesman");
+        InventoryService.deleteItem(this.state.inventory.id).then(() => window.location.hash = "salesman");
     },
 
     editHandler() {
-        window.location.hash = "#salesman/" + this.state.product.id + "/edit";
+        // window.location.hash = "#stockman/" + this.state.inventory.id + "/edit";
     },
 
     render() {
+        let isAuto = this.state.inventory.auto_stock == 0 ? "false": "true";
         return (
             <div>
                 <RecordHeader type="Product"
                               icon="orders"
-                              title={this.state.product.product_name}
+                              title={this.state.inventory.product_name}
                               onEdit={this.editHandler}
                               onDelete={this.deleteHandler}>
-                    <HeaderField label="Sale Price" value={this.state.product.sale_price}/>
-                    <HeaderField label="Cost Price" value={this.state.product.cost_price}/>
+                    <HeaderField label="Iventory Amount" value={this.state.inventory.inventory_sum}/>
+                    <HeaderField label="Auto Stock" value={isAuto}/>
                 </RecordHeader>
 
-                {React.cloneElement(this.props.children, {product: this.state.product})}
+                {React.cloneElement(this.props.children, {inventory: this.state.inventory})}
             </div>
         );
     }

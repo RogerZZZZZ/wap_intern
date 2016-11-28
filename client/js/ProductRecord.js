@@ -16,7 +16,6 @@ export default React.createClass({
     },
 
     componentDidMount() {
-        console.log(this.props.params);
         this.getProduct(this.props.params.productId);
     },
 

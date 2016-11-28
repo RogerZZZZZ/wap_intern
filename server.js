@@ -9,6 +9,7 @@ var express = require('express'),
     inventory = require('./server/inventory'),
     supplier = require('./server/supplier'),
     teachers = require('./server/teachers'),
+    command = require('./server/command'),
     periods = require('./server/periods'),
     producttype = require('./server/producttype'),
     sqlinit = require('./server/sqlinit'),
@@ -64,6 +65,10 @@ app.delete('/inventory/:id', inventory.deleteItem);
 app.get('/supplier', supplier.findAll);
 
 app.get('/producttype', producttype.findAll);
+
+app.get('/command', command.findAll);
+app.put('/command', command.updateItem);
+app.get('/command/:id', command.handlerTask);
 
 app.use(function(err, req, res, next) {
     console.error(err.stack);

@@ -1,0 +1,540 @@
+{
+    "data": {
+        "Floors": [{
+            "High": 0,
+            "_id": 1,
+            "Name_en": "",
+            "Outline": [
+                [
+                    [18, -16, 18, -59, 23, -59, 23, -177, 18, -177, 18, -248, 628, -271, 628, -182, 624, -182, 624, -56, 628, -56, 628, -15, 18, -15]
+                ]
+            ],
+            "Name": "F1",
+            "Brief": "F1",
+            "FuncAreas": [{
+                "_id": 4380054,
+                "Name_en": "",
+                "Center": [48.5, -31],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "Brief": "",
+                "Outline": [
+                    [
+                        [18, -15, 79, -15, 79, -47, 18, -47]
+                    ]
+                ],
+                "dianping_id": -1,
+                "ShopNo": "",
+                "Area": 19.52
+            }, {
+                "Brand": 33722,
+                "Center": [74, -123],
+                "MateId": 0,
+                "Name": "Sea Products",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 104,
+                "_id": 4380055,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [31, -74, 117, -74, 117, -172, 31, -172]
+                    ]
+                ],
+                "Brief": "1046,104,33722,反斗乐园",
+                "dianping_id": 3311653,
+                "Area": 84.28,
+                "BrandShop": 1
+            }, {
+                "_id": 4380057,
+                "Name_en": "",
+                "Center": [136.8, -200.8],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "Brief": "",
+                "Outline": [
+                    [
+                        [145, -201, 135, -211, 124, -201, 135, -190, 145, -201]
+                    ]
+                ],
+                "dianping_id": -1,
+                "ShopNo": "",
+                "Area": 2.205
+            }, {
+                "Brand": 37177,
+                "Center": [77.33333333333333, -212.83333333333334],
+                "MateId": 0,
+                "Name": "Drinks",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380058,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [21, -179, 121, -179, 121, -215, 90, -214, 90, -248, 21, -242]
+                    ]
+                ],
+                "Brief": "Drinks",
+                "dianping_id": 8692019,
+                "Area": 56.545,
+                "BrandShop": 2
+            }, {
+                "_id": 4380059,
+                "Name_en": "",
+                "Center": [198.5, -232.5],
+                "MateId": 0,
+                "Name": "Instant Foods",
+                "Type": "",
+                "Brief": "Instant Foods",
+                "Outline": [
+                    [
+                        [147, -211, 147, -252, 250, -256, 250, -211]
+                    ]
+                ],
+                "dianping_id": -1,
+                "ShopNo": "",
+                "BrandShop": 3,
+                "Area": 44.29
+            }, {
+                "Brand": 11884,
+                "Center": [291, -234.5],
+                "MateId": 0,
+                "Name": "Electrics",
+                "Type": "",
+                "ShopNo": "",
+                "Category": "101",
+                "_id": 4380061,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [256, -211, 326, -211, 326, -259, 256, -257]
+                    ]
+                ],
+                "Brief": "Electrics",
+                "dianping_id": 3711769,
+                "Area": 32.9,
+                "BrandShop": 4
+            }, {
+                "Brand": 37243,
+                "Center": [358, -235.75],
+                "MateId": 0,
+                "Name": "Clothes",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380062,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [329, -211, 387, -211, 387, -262, 329, -259]
+                    ]
+                ],
+                "Brief": "Clothes",
+                "dianping_id": 2130217,
+                "Area": 28.71,
+                "BrandShop": 5
+            }, {
+                "Brand": 37275,
+                "Center": [461, -238.75],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380064,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [440, -213, 482, -213, 482, -265, 440, -264]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 3490051,
+                "Area": 21.63,
+                "BrandShop": 303354
+            }, {
+                "Brand": 36796,
+                "Center": [570.0666666666667, -204.13333333333333],
+                "MateId": 0,
+                "Name": "Commodity",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380065,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [484, -211, 484, -265, 628, -271, 628, -182, 622, -182, 622, -177, 599, -177, 599, -174, 584, -174, 584, -181, 563, -181, 563, -229, 532, -229, 532, -218, 527, -211]
+                    ]
+                ],
+                "Brief": "Commodity",
+                "dianping_id": 3702895,
+                "Area": 97.735,
+                "BrandShop": 6
+            }, {
+                "_id": 4380066,
+                "Name_en": "",
+                "Center": [595.75, -40.75],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "Brief": "",
+                "Outline": [
+                    [
+                        [563, -15, 628, -15, 628, -56, 624, -56, 624, -63, 569, -63, 569, -29, 561, -29]
+                    ]
+                ],
+                "dianping_id": -1,
+                "ShopNo": "",
+                "Area": 29.02
+            }, {
+                "Brand": 36502,
+                "Center": [596, -118.5],
+                "MateId": 0,
+                "Name": "Fresh Food",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 103,
+                "_id": 4380067,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [568, -69, 624, -69, 624, -168, 568, -168]
+                    ]
+                ],
+                "Brief": "Fresh Food",
+                "dianping_id": 4029049,
+                "Area": 55.44,
+                "BrandShop": 9
+            }, {
+                "Brand": 36660,
+                "Center": [413, -100.5],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380068,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [396, -86, 430, -86, 430, -115, 396, -115]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 6373457,
+                "Area": 9.86,
+                "BrandShop": 293524
+            }, {
+                "Brand": 29128,
+                "Center": [413, -133],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380069,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [396, -117, 430, -117, 430, -149, 396, -149]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 8957013,
+                "Area": 10.88,
+                "BrandShop": 266224
+            }, {
+                "Brand": 37483,
+                "Center": [449.22222222222223, -67.88888888888889],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": "108",
+                "_id": 4380070,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [443, -15, 533, -15, 533, -152, 432, -152, 432, -83, 396, -83, 396, -48, 439, -48, 439, -15]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 2111626,
+                "Area": 148.66,
+                "BrandShop": 203555
+            }, {
+                "Brand": 36881,
+                "Center": [369.77777777777777, -44.77777777777778],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380071,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [344, -15, 437, -15, 437, -45, 392, -45, 392, -83, 320, -83, 320, -51, 343, -51, 343, -15]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 3151615,
+                "Area": 54.18,
+                "BrandShop": 296172
+            }, {
+                "Brand": 36497,
+                "Center": [307.2857142857143, -51.857142857142854],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380072,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [274, -15, 341, -15, 341, -49, 317, -49, 317, -83, 287, -83, 274, -69]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 2077489,
+                "Area": 36.49,
+                "BrandShop": 290920
+            }, {
+                "Brand": 24343,
+                "Center": [207, -38.666666666666664],
+                "MateId": 0,
+                "Name": "Fruits",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380073,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [163, -15, 163, -43, 187, -43, 187, -58, 271, -58, 271, -15]
+                    ]
+                ],
+                "Brief": "Fruits",
+                "dianping_id": 4216940,
+                "Area": 42.84,
+                "BrandShop": 8
+            }, {
+                "Brand": 36746,
+                "Center": [119.66666666666667, -40.666666666666664],
+                "MateId": 0,
+                "Name": "Bread",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380075,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [81, -15, 161, -15, 161, -60, 117, -60, 117, -47, 81, -47]
+                    ]
+                ],
+                "Brief": "Bread",
+                "dianping_id": 5437833,
+                "Area": 31.32,
+                "BrandShop": 7
+            }, {
+                "Brand": 37195,
+                "Center": [175, -139],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 104,
+                "_id": 4380076,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [150, -88, 200, -88, 200, -190, 150, -190]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 5414231,
+                "Area": 51,
+                "BrandShop": 302515
+            }, {
+                "Brand": 37363,
+                "Center": [246.5, -119],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 4380077,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [204, -105, 289, -105, 289, -133, 204, -133]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 17867911,
+                "Area": 23.8,
+                "BrandShop": 304711
+            }, {
+                "Brand": 37199,
+                "Center": [246.5, -147.5],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": "103",
+                "_id": 4380078,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [204, -135, 289, -135, 289, -160, 204, -160]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 4026241,
+                "Area": 21.25,
+                "BrandShop": 302532
+            }, {
+                "Brand": 37412,
+                "Center": [246.5, -176.5],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "ShopNo": "",
+                "Category": 104,
+                "_id": 4380079,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [204, -163, 289, -163, 289, -190, 204, -190]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 4025716,
+                "Area": 22.95,
+                "BrandShop": 206995
+            }, {
+                "_id": 4380080,
+                "Name_en": "",
+                "Center": [312.5, -127.5],
+                "MateId": 0,
+                "Name": "",
+                "Type": "",
+                "Brief": "",
+                "Outline": [
+                    [
+                        [307, -113, 318, -113, 318, -142, 307, -142]
+                    ]
+                ],
+                "dianping_id": -1,
+                "ShopNo": "",
+                "Area": 3.19
+            }, {
+                "_id": 4380083,
+                "Name_en": "",
+                "Center": [355, -152.75],
+                "MateId": 0,
+                "Name": "",
+                "Type": "000100",
+                "Brief": "",
+                "Outline": [
+                    [
+                        [320, -114, 326, -194, 389, -192, 385, -111]
+                    ]
+                ],
+                "dianping_id": -1,
+                "ShopNo": "",
+                "Area": 51.645
+            }, {
+                "Brand": 36630,
+                "Center": [396.25, -237],
+                "MateId": 0,
+                "Name": "",
+                "Type": "0",
+                "ShopNo": "",
+                "Category": 103,
+                "_id": 0,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [403, -263, 404, -212, 389, -211, 389, -262]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 15992710,
+                "Area": 7.4,
+                "BrandShop": 293093
+            }, {
+                "Brand": 36760,
+                "Center": [429.75, -238.5],
+                "MateId": 0,
+                "Name": "",
+                "Type": "0",
+                "ShopNo": "",
+                "Category": 101,
+                "_id": 0,
+                "Name_en": "",
+                "Outline": [
+                    [
+                        [422, -213, 421, -264, 438, -264, 438, -213]
+                    ]
+                ],
+                "Brief": "",
+                "dianping_id": 11553799,
+                "Area": 8.415,
+                "BrandShop": 294752
+            }, {
+                "_id": 0,
+                "Name_en": "",
+                "Center": [412.5, -238],
+                "MateId": 0,
+                "Name": "",
+                "Type": "0",
+                "Brief": "",
+                "Outline": [
+                    [
+                        [422, -213, 421, -264, 403, -263, 404, -212]
+                    ]
+                ],
+                "dianping_id": -1,
+                "ShopNo": "",
+                "Area": 9.19
+            }],
+            "PubPoint": [],
+            "Area": 1480.51,
+            "ImageLayer": []
+        }],
+        "building": {
+            "Adcode": "",
+            "Time": "10:00-22:00",
+            "_yLat": 0,
+            "Outline": [
+                [
+                    []
+                ]
+            ],
+            "Name": "港隆城购物中心",
+            "Mall": 437,
+            "Type": "",
+            "Address": "宝安区80区宝民二路111号",
+            "UnderFloors": 0,
+            "Brief": "",
+            "_id": "",
+            "Name_en": "",
+            "DefaultFloor": 1,
+            "_xLon": 0,
+            "FrontAngle": 0.4066623923434861,
+            "FloorsId": "1,2,3,4,5",
+            "High": 0,
+            "Tel": "755-29988888",
+            "Version": 0,
+            "Area": 0,
+            "GroundFloors": 5
+        }
+    }
+}

@@ -7,14 +7,6 @@ export default React.createClass({
         window.location.hash = "#stockman/" + inventory.id;
     },
 
-    actionHandler(data, value, label) {
-        if (label === "Delete") {
-            this.props.onDelete(data);
-        } else if (label === "Edit") {
-            this.props.onEdit(data);
-        }
-    },
-
     render() {
         return (
             <DataGrid data={this.props.inventory}>

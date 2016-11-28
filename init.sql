@@ -8,9 +8,13 @@ drop table IF EXISTS staff;
 drop table IF EXISTS supplier;
 drop table IF EXISTS billdetail;
 drop table IF EXISTS bill;
+drop table IF EXISTS command;
+drop table IF EXISTS commandtype;
+drop table IF EXISTS shelfstatus;
 drop table IF EXISTS product;
 drop table IF EXISTS supermarket;
 drop table IF EXISTS producttype;
+
 
 CREATE TABLE IF NOT EXISTS student (
     id              SERIAL PRIMARY KEY,
@@ -79,7 +83,7 @@ CREATE TABLE IF NOT EXISTS enrollment (
 
   CREATE TABLE IF NOT EXISTS producttype (
       id              SERIAL PRIMARY KEY,
-      type_name            TEXT,
+      type_name       TEXT,
       position_id     integer
   );
 
@@ -89,7 +93,15 @@ CREATE TABLE IF NOT EXISTS enrollment (
       sale_price         NUMERIC,
       cost_price         NUMERIC,
       type_id           integer REFERENCES producttype(id) ON DELETE CASCADE,
-      supermarket_id  integer REFERENCES supermarket(id) ON DELETE CASCADE
+      supermarket_id    integer REFERENCES supermarket(id) ON DELETE CASCADE
+  );
+
+  CREATE TABLE IF NOT EXISTS shelfstatus (
+      id              SERIAL PRIMARY KEY,
+      position_id     integer,
+      product_id      integer REFERENCES product(id) ON DELETE CASCADE,
+      amount          integer,
+      threshold       integer
   );
 
   CREATE TABLE IF NOT EXISTS supplier (
@@ -111,6 +123,8 @@ CREATE TABLE IF NOT EXISTS inventory (
   product_id         integer REFERENCES product(id) ON DELETE CASCADE,
   supplier_id        integer REFERENCES supplier(id) ON DELETE CASCADE,
   inventory_sum      integer,
+  auto_stock         integer,
+  expired_date       DATE,
   type_id            integer REFERENCES producttype(id) ON DELETE CASCADE,
   supermarket_id     integer REFERENCES supermarket(id) ON DELETE CASCADE
 );
@@ -124,6 +138,22 @@ CREATE TABLE IF NOT EXISTS billdetail (
     supermarket_id     integer REFERENCES supermarket(id) ON DELETE CASCADE,
     type_id            integer REFERENCES producttype(id) ON DELETE CASCADE,
     create_date        TIMESTAMP default current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS commandtype (
+    id       SERIAL PRIMARY KEY,
+    name     TEXT
+);
+
+CREATE TABLE IF NOT EXISTS command (
+    id                  SERIAL PRIMARY KEY,
+    from_id             integer,
+    to_id               integer,
+    content             TEXT,
+    type_id             integer REFERENCES commandtype(id) ON DELETE CASCADE,
+    status              integer,
+    product_id          integer REFERENCES product(id) ON DELETE CASCADE,
+    create_date         TIMESTAMP default current_timestamp
 );
 
 CREATE UNIQUE INDEX idx_enrollment ON enrollment (course_id, student_id);
@@ -140,7 +170,15 @@ INSERT INTO producttype (type_name, position_id) VALUES
 ('Clothes', 5),
 ('Commodity', 6),
 ('Bread', 7),
-('Fruits', 8);
+('Fruits', 8),
+('Fresh Food', 9);
+
+INSERT INTO commandtype (name) VALUES
+('replace the ice'),
+('not enough on the shelf'),
+('do stock');
+
+
 
 INSERT INTO bill (supermarket_id) VALUES
 (2),
@@ -175,7 +213,10 @@ INSERT INTO product (product_name, sale_price, cost_price, supermarket_id, type_
 ('peach', 8, 6, 2, 8),
 ('earphone', 299, 278, 2, 4),
 ('toast', 10, 6, 2, 7),
-('mouse', 149, 130.7, 2, 4);
+('mouse', 149, 130.7, 2, 4),
+('lobster', 20, 13, 2, 9),
+('shrimp', 40, 33, 2, 9),
+('fish', 14, 10, 2, 9);
 
 INSERT INTO billdetail (product_id, bill_id, bill_amount, cost_amount, supermarket_id, type_id) VALUES
 (1, 1, 10, 8, 2, 2),
@@ -286,27 +327,43 @@ INSERT INTO supplier (supplier_name, address, phone, email) VALUES
 ('super supplier', 'ShangHai Road', '234-996', '234@gmail.com'),
 ('apple supplier', 'XiAn Road', '475-658', '367@gmail.com');
 
-INSERT INTO inventory (product_id, supplier_id, inventory_sum, supermarket_id, type_id) VALUES
-(1, 1, 538, 2, 2),
-(2, 1, 99, 2, 2),
-(3, 2, 123, 2, 4),
-(4, 3, 87, 2, 4),
-(5, 3, 876, 2, 4),
-(6, 1, 67, 2, 4),
-(7, 2, 10, 2, 4),
-(8, 1, 13, 2, 2),
-(9, 1, 200, 2, 7),
-(10, 2, 343, 2, 6),
-(11, 2, 65, 2, 6),
-(12, 3, 123, 2, 5),
-(13, 1, 43, 2, 6),
-(14, 3, 654, 2, 5),
-(15, 2, 343, 2, 5),
-(16, 2, 65, 2, 8),
-(17, 3, 123, 2, 8),
-(18, 1, 43, 2, 4),
-(19, 3, 654, 2, 7),
-(20, 2, 98, 2, 4);
+INSERT INTO inventory (product_id, supplier_id, inventory_sum, supermarket_id, type_id, auto_stock, expired_date) VALUES
+(1, 1, 538, 2, 2, 0, '2017-10-3'),
+(2, 1, 99, 2, 2, 0, '2017-10-3'),
+(3, 2, 123, 2, 4, 0, '2017-10-3'),
+(4, 3, 87, 2, 4, 0, '2017-10-3'),
+(5, 3, 876, 2, 4, 0, '2017-10-3'),
+(6, 1, 67, 2, 4, 0, '2017-10-3'),
+(7, 2, 10, 2, 4, 0, '2017-10-3'),
+(8, 1, 13, 2, 2, 0, '2017-10-3'),
+(9, 1, 200, 2, 7, 0, '2017-10-3'),
+(10, 2, 343, 2, 6, 0, '2017-10-3'),
+(11, 2, 65, 2, 6, 0, '2017-10-3'),
+(12, 3, 123, 2, 5, 0, '2017-10-3'),
+(13, 1, 43, 2, 6, 0, '2017-10-3'),
+(14, 3, 654, 2, 5, 0, '2017-10-3'),
+(15, 2, 343, 2, 5, 0, '2017-10-3'),
+(16, 2, 65, 2, 8, 0, '2017-10-3'),
+(17, 3, 123, 2, 8, 0, '2017-10-3'),
+(18, 1, 43, 2, 4, 0, '2017-10-3'),
+(19, 3, 654, 2, 7, 0, '2017-10-3'),
+(20, 2, 98, 2, 4, 0, '2017-10-3'),
+(21, 2, 20, 2, 4, 1, '2016-11-27'),
+(22, 2, 40, 2, 4, 0, '2016-11-27'),
+(23, 2, 35, 2, 4, 1, '2016-11-27');
+
+CREATE TABLE IF NOT EXISTS shelfstatus (
+    id              SERIAL PRIMARY KEY,
+    position_id     integer,
+    product_id      integer REFERENCES product(id) ON DELETE CASCADE,
+    amount          integer,
+    threshold       integer
+);
+
+INSERT INTO shelfstatus (position_id, product_id, amount, threshold) VALUES
+(9, 21, 10, 5),
+(9, 22, 8, 4),
+(9, 23, 8, 10);
 
 INSERT INTO staff (username, password, position_type, supermarket_id) VALUES
 ('manager', '123456', 1, 2),
@@ -318,6 +375,11 @@ INSERT INTO period (name) VALUES
 ('Spring 2015'),
 ('Fall 2015'),
 ('Spring 2016');
+
+INSERT INTO command (from_id, to_id, content, type_id, status, product_id) VALUES
+(1, 3, 'Replace the product', 3, 1, 21),
+(0, 3, 'Expired date is comming', 2, 1, 22),
+(0, 3, 'Product is not enough on the shelf', 1, 1, 23);
 
 INSERT INTO student (first_name, last_name, address, city, state, zip, dob, phone, mobile_phone, email, pic, registration) VALUES
 ('Camila', 'Martinez', '18 Henry st', 'Cambridge', 'MA', '01742', '1995/09/07', '617-985-6955', '617-666-5555', 'cmartinez@fakemail.com', 'https://s3-us-west-1.amazonaws.com/sfdc-demo/people/camila_martinez.jpg', '2012/07/14'),

@@ -78,3 +78,24 @@
     cursor: pointer;
     right: 20px;
 }
+
+.badge-style{
+    padding: 0;
+}
+
+.cardDetail{
+    margin-top: 5px;
+}
+
+.map{
+    width: 800px;
+    height: 600px;
+}
+
+.3d-map{
+    width: 800px;
+    height: 500px;
+    top:0px;
+    left: 0px;
+    position: absolute;
+}

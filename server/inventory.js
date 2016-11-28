@@ -28,7 +28,7 @@ let findById = (req, res, next) => {
     let id = req.params.id;
     let supermarket_id = req.query.supermarket_id;
     // let supermarket_id = req.
-    let sql = `SELECT a.id, a.supermarket_id, b.product_name, c.supplier_name, a.inventory_sum
+    let sql = `SELECT a.id, a.supermarket_id, a.auto_stock, b.product_name, c.supplier_name, a.inventory_sum
             FROM inventory a,product b,supplier c
             WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.id=$1 AND a.supermarket_id=$2`;
     db.query(sql, [parseInt(id), supermarket_id])
@@ -62,8 +62,8 @@ let createItem = (req, res, next) => {
 
 let updateItem = (req, res, next) => {
     let inventory = req.body;
-    let sql = `UPDATE inventory SET product_id=$1, supplier_id=$2, inventory_sum=$3 WHERE id=$4 AND supermarket_id=$5`;
-    db.query(sql, [inventory.product_id, inventory.supplier_id, inventory.inventory_sum, inventory.id, inventory.supermarket_id])
+    let sql = `UPDATE inventory SET product_id=$1, supplier_id=$2, inventory_sum=$3, auto_stock=$4 WHERE id=$5 AND supermarket_id=$6`;
+    db.query(sql, [inventory.product_id, inventory.supplier_id, inventory.inventory_sum, inventory.auto_stock, inventory.id, inventory.supermarket_id])
         .then(() => res.send({result: 'ok'}))
         .catch(next);
 };
