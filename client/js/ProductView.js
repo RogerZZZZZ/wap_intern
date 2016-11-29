@@ -3,6 +3,14 @@ import SalesChart from './components/SalesChart';
 
 export default React.createClass({
 
+    getInitialState(){
+        return {product: this.props.product}
+    },
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({product: nextProps});
+    },
+
     render() {
         let product = this.props.product;
         return (
@@ -19,7 +27,7 @@ export default React.createClass({
                     </dl>
                 </div>
             </div>
-            <SalesChart productId={product.id} />
+            <SalesChart product={product} />
         </div>
         );
     }

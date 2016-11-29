@@ -32,10 +32,6 @@ export default React.createClass({
         InventoryService.deleteItem(this.state.inventory.id).then(() => window.location.hash = "salesman");
     },
 
-    editHandler() {
-        // window.location.hash = "#stockman/" + this.state.inventory.id + "/edit";
-    },
-
     render() {
         let isAuto = this.state.inventory.auto_stock == 0 ? "false": "true";
         return (
@@ -45,7 +41,9 @@ export default React.createClass({
                               title={this.state.inventory.product_name}
                               onEdit={this.editHandler}
                               onDelete={this.deleteHandler}>
-                    <HeaderField label="Iventory Amount" value={this.state.inventory.inventory_sum}/>
+                    <HeaderField label="Inventory Amount" value={this.state.inventory.inventory_sum}/>
+                    <HeaderField label="Inventory Threshold" value={this.state.inventory.threshold}/>
+                    <HeaderField label="Shelf Amount" value={this.state.inventory.amount} onClick={this.goToMap}/>
                     <HeaderField label="Auto Stock" value={isAuto}/>
                 </RecordHeader>
 

@@ -29,6 +29,9 @@ export default React.createClass({
         CommandService.handlerTask(item.id, item.product_id, item.type_id, Math.abs(item.amount-item.threshold)).then(() => {
             window.location.reload();
         });
+        if(item.type_id === 2){
+            
+        }
     },
 
     render() {

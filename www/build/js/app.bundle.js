@@ -94,23 +94,27 @@
 	
 	var _InventoryView2 = _interopRequireDefault(_InventoryView);
 	
-	var _InventoryFormWrapper = __webpack_require__(977);
+	var _StockHistoryView = __webpack_require__(977);
+	
+	var _StockHistoryView2 = _interopRequireDefault(_StockHistoryView);
+	
+	var _InventoryFormWrapper = __webpack_require__(980);
 	
 	var _InventoryFormWrapper2 = _interopRequireDefault(_InventoryFormWrapper);
 	
-	var _CommandHome = __webpack_require__(978);
+	var _CommandHome = __webpack_require__(981);
 	
 	var _CommandHome2 = _interopRequireDefault(_CommandHome);
 	
-	var _ShelfView = __webpack_require__(979);
+	var _ShelfView = __webpack_require__(982);
 	
 	var _ShelfView2 = _interopRequireDefault(_ShelfView);
 	
-	var _ShelfView3D = __webpack_require__(981);
+	var _ShelfView3D = __webpack_require__(984);
 	
 	var _ShelfView3D2 = _interopRequireDefault(_ShelfView3D);
 	
-	var _ErrorPage = __webpack_require__(982);
+	var _ErrorPage = __webpack_require__(985);
 	
 	var _ErrorPage2 = _interopRequireDefault(_ErrorPage);
 	
@@ -145,6 +149,7 @@
 	        _react2['default'].createElement(_reactRouter.Route, { path: 'error', component: _ErrorPage2['default'] }),
 	        _react2['default'].createElement(_reactRouter.Route, { path: 'shelfView/:shelfId', component: _ShelfView2['default'] }),
 	        _react2['default'].createElement(_reactRouter.Route, { path: 'shelfView3D/:shelfId', component: _ShelfView3D2['default'] }),
+	        _react2['default'].createElement(_reactRouter.Route, { path: 'history', component: _StockHistoryView2['default'] }),
 	        _react2['default'].createElement(_reactRouter.Route, { path: '*', component: _LoginView2['default'] })
 	    )
 	), document.body);
@@ -39839,6 +39844,7 @@
 	        CommandService.handlerTask(item.id, item.product_id, item.type_id, Math.abs(item.amount - item.threshold)).then(function () {
 	            window.location.reload();
 	        });
+	        if (item.type_id === 2) {}
 	    },
 	    render: function render() {
 	        var item = this.props.data;
@@ -41870,6 +41876,7 @@
 	        });
 	    },
 	    sendMisstion: function sendMisstion() {
+	        this.handleTouchTap();
 	        var item = this.props.data;
 	        var command = {
 	            from_id: 1,
@@ -42770,6 +42777,7 @@
 	        });
 	    },
 	    sendMisstion: function sendMisstion() {
+	        this.handleTouchTap();
 	        var item = this.props.data;
 	        var command = {
 	            from_id: 1,
@@ -42910,6 +42918,7 @@
 	        });
 	    },
 	    sendMission: function sendMission() {
+	        this.handleTouchTap();
 	        var item = this.props.data;
 	        var command = {
 	            from_id: 1,
@@ -55239,6 +55248,12 @@
 	
 	exports['default'] = _react2['default'].createClass({
 	    displayName: 'ProductView',
+	    getInitialState: function getInitialState() {
+	        return { product: this.props.product };
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        this.setState({ product: nextProps });
+	    },
 	    render: function render() {
 	        var product = this.props.product;
 	        return _react2['default'].createElement(
@@ -55274,7 +55289,7 @@
 	                    )
 	                )
 	            ),
-	            _react2['default'].createElement(_SalesChart2['default'], { productId: product.id })
+	            _react2['default'].createElement(_SalesChart2['default'], { product: product })
 	        );
 	    }
 	});
@@ -55308,8 +55323,8 @@
 	    color: ['#3398DB'],
 	    tooltip: {
 	        trigger: 'axis',
-	        axisPointer: { // 坐标轴指示器，坐标轴触发有效
-	            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+	        axisPointer: {
+	            type: 'shadow'
 	        }
 	    },
 	    grid: {
@@ -55320,7 +55335,7 @@
 	    },
 	    xAxis: [{
 	        type: 'category',
-	        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+	        data: [],
 	        axisTick: {
 	            alignWithLabel: true
 	        }
@@ -55329,35 +55344,40 @@
 	        type: 'value'
 	    }],
 	    series: [{
-	        name: '直接访问',
+	        name: 'Sales',
 	        type: 'bar',
 	        barWidth: '60%',
-	        data: [10, 52, 200, 334, 390, 330, 220]
+	        data: []
 	    }]
 	};
 	
 	exports['default'] = _react2['default'].createClass({
 	    displayName: 'SalesChart',
-	    getOption: function getOption() {
-	        return option;
-	    },
-	    getData: function getData() {
-	        var _this = this;
-	
-	        SalesService.findSales(this.props.productId).then(function (data) {
-	            console.log(data);
-	            _this.setState({ data: data });
-	        });
+	    getData: function getData(productId) {
+	        if (productId) {
+	            var myChart = echarts.init(document.getElementById('charts'));
+	            SalesService.findSales(productId).then(function (data) {
+	                var xAxis = [];
+	                var yAxis = [];
+	                for (var i = 0; i < data.length; i++) {
+	                    xAxis.push(data[i].create_date);
+	                    yAxis.push(data[i].count);
+	                }
+	                option.xAxis[0].data = xAxis;
+	                option.series[0].data = yAxis;
+	                myChart.setOption(option);
+	                // this.setState({data});
+	            });
+	        }
 	    },
 	    getInitialState: function getInitialState() {
-	        return { data: [] };
+	        return { option: [] };
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        this.getData(nextProps.product.id);
 	    },
 	    componentDidMount: function componentDidMount() {
-	        var myChart = echarts.init(document.getElementById('charts'));
-	        // 绘制图表
-	        myChart.setOption(option);
-	        console.log(this.props.productId);
-	        this.getData();
+	        // draw
 	    },
 	    render: function render() {
 	        return _react2['default'].createElement('div', { className: 'charts', id: 'charts' });
@@ -55373,7 +55393,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.findSales = undefined;
+	exports.findById = exports.makeSale = exports.findSales = undefined;
 	
 	var _rest = __webpack_require__(412);
 	
@@ -55385,6 +55405,14 @@
 	
 	var findSales = exports.findSales = function findSales(id, sort) {
 	  return rest.get(url, { id: id, sort: sort });
+	};
+	
+	var makeSale = exports.makeSale = function makeSale(id, supplier_id, threshold) {
+	  return rest.get(url + "/" + id, { id: id, supplier_id: supplier_id, threshold: threshold });
+	};
+	
+	var findById = exports.findById = function findById(id) {
+	  return rest.get(url + "/" + id, { id: id });
 	};
 
 /***/ },
@@ -117596,9 +117624,6 @@
 	            return window.location.hash = "salesman";
 	        });
 	    },
-	    editHandler: function editHandler() {
-	        // window.location.hash = "#stockman/" + this.state.inventory.id + "/edit";
-	    },
 	    render: function render() {
 	        var isAuto = this.state.inventory.auto_stock == 0 ? "false" : "true";
 	        return _react2['default'].createElement(
@@ -117611,7 +117636,9 @@
 	                    title: this.state.inventory.product_name,
 	                    onEdit: this.editHandler,
 	                    onDelete: this.deleteHandler },
-	                _react2['default'].createElement(_PageHeader.HeaderField, { label: 'Iventory Amount', value: this.state.inventory.inventory_sum }),
+	                _react2['default'].createElement(_PageHeader.HeaderField, { label: 'Inventory Amount', value: this.state.inventory.inventory_sum }),
+	                _react2['default'].createElement(_PageHeader.HeaderField, { label: 'Inventory Threshold', value: this.state.inventory.threshold }),
+	                _react2['default'].createElement(_PageHeader.HeaderField, { label: 'Shelf Amount', value: this.state.inventory.amount, onClick: this.goToMap }),
 	                _react2['default'].createElement(_PageHeader.HeaderField, { label: 'Auto Stock', value: isAuto })
 	            ),
 	            _react2['default'].cloneElement(this.props.children, { inventory: this.state.inventory })
@@ -117623,7 +117650,7 @@
 /* 976 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -117633,44 +117660,104 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _getMuiTheme = __webpack_require__(210);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	var _TextField = __webpack_require__(414);
+	
+	var _TextField2 = _interopRequireDefault(_TextField);
+	
+	var _MuiThemeProvider = __webpack_require__(338);
+	
+	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+	
+	var _RaisedButton = __webpack_require__(426);
+	
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+	
+	var _colors = __webpack_require__(269);
+	
+	var _SalesService = __webpack_require__(581);
+	
+	var SalesService = _interopRequireWildcard(_SalesService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports["default"] = _react2["default"].createClass({
-	    displayName: "InventoryView",
+	var muiTheme = (0, _getMuiTheme2['default'])({
+	    palette: {
+	        accent1Color: _colors.deepOrange500
+	    }
+	});
+	
+	exports['default'] = _react2['default'].createClass({
+	    displayName: 'InventoryView',
+	
+	    childContextTypes: {
+	        muiTheme: _react2['default'].PropTypes.object.isRequired
+	    },
+	
+	    getChildContext: function getChildContext() {
+	        return { muiTheme: (0, _getMuiTheme2['default'])() };
+	    },
+	    makeSale: function makeSale() {
+	        SalesService.makeSale(this.props.inventory.product_id, this.props.inventory.supplier_id, this.props.inventory.threshold).then(function (res) {
+	            return console.log(res);
+	        });
+	    },
+	    checkRecord: function checkRecord() {
+	        window.location.hash = "#history/";
+	    },
+	    goToMap: function goToMap() {
+	        window.location.hash = "#shelfView/" + this.props.inventory.position_id;
+	    },
 	    render: function render() {
 	        var inventory = this.props.inventory;
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "slds-m-around--medium" },
-	            _react2["default"].createElement(
-	                "div",
-	                { className: "slds-grid slds-wrap slds-m-bottom--large" },
-	                _react2["default"].createElement(
-	                    "div",
-	                    { className: "slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium" },
-	                    _react2["default"].createElement(
-	                        "dl",
-	                        { className: "page-header--rec-home__detail-item" },
-	                        _react2["default"].createElement(
-	                            "dt",
-	                            null,
-	                            _react2["default"].createElement(
-	                                "p",
-	                                { className: "slds-text-heading--label slds-truncate", title: "Field 1" },
-	                                "Product in Inventory"
-	                            )
-	                        ),
-	                        _react2["default"].createElement(
-	                            "dd",
-	                            null,
-	                            _react2["default"].createElement(
-	                                "p",
-	                                { className: "slds-text-body--regular slds-truncate", title: "" },
-	                                inventory.product_name
+	        return _react2['default'].createElement(
+	            _MuiThemeProvider2['default'],
+	            { muiTheme: muiTheme },
+	            _react2['default'].createElement(
+	                'div',
+	                null,
+	                _react2['default'].createElement(
+	                    'div',
+	                    { className: 'slds-m-around--medium' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'slds-grid slds-wrap slds-m-bottom--large' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-m-top--medium' },
+	                            _react2['default'].createElement(
+	                                'dl',
+	                                { className: 'page-header--rec-home__detail-item' },
+	                                _react2['default'].createElement(
+	                                    'dt',
+	                                    null,
+	                                    _react2['default'].createElement(
+	                                        'p',
+	                                        { className: 'slds-text-heading--label slds-truncate', title: 'Field 1' },
+	                                        'Product in Inventory'
+	                                    )
+	                                ),
+	                                _react2['default'].createElement(
+	                                    'dd',
+	                                    null,
+	                                    _react2['default'].createElement(
+	                                        'p',
+	                                        { className: 'slds-text-body--regular slds-truncate', title: '' },
+	                                        inventory.product_name
+	                                    )
+	                                )
 	                            )
 	                        )
-	                    )
-	                )
+	                    ),
+	                    _react2['default'].createElement(_RaisedButton2['default'], { className: 'login-button', label: 'Buy 20', primary: true, onClick: this.makeSale })
+	                ),
+	                _react2['default'].createElement(_RaisedButton2['default'], { className: 'login-button', label: 'Check Records', primary: true, onClick: this.checkRecord }),
+	                _react2['default'].createElement(_RaisedButton2['default'], { className: 'login-button', label: 'Go to Map', primary: true, onClick: this.goToMap })
 	            )
 	        );
 	    }
@@ -117678,6 +117765,128 @@
 
 /***/ },
 /* 977 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _StockHistoryList = __webpack_require__(978);
+	
+	var _StockHistoryList2 = _interopRequireDefault(_StockHistoryList);
+	
+	var _LoginUtils = __webpack_require__(402);
+	
+	var LoginUtils = _interopRequireWildcard(_LoginUtils);
+	
+	var _config = __webpack_require__(405);
+	
+	var Config = _interopRequireWildcard(_config);
+	
+	var _StockHistoryService = __webpack_require__(979);
+	
+	var StockHistoryService = _interopRequireWildcard(_StockHistoryService);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports['default'] = _react2['default'].createClass({
+	    displayName: 'StockHistoryView',
+	    getInitialState: function getInitialState() {
+	        return { history: [] };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        if (!LoginUtils.isLogin()) return '#login';
+	        this.getNotification();
+	    },
+	    getNotification: function getNotification() {
+	        var _this = this;
+	
+	        StockHistoryService.findAll().then(function (history) {
+	            return _this.setState({ history: history });
+	        });
+	    },
+	    rowClick: function rowClick(data) {
+	        if (this.props.onRowClick) {
+	            this.props.onRowClick(data);
+	        }
+	    },
+	    render: function render() {
+	        var rows = void 0;
+	        return _react2['default'].createElement(
+	            'div',
+	            null,
+	            _react2['default'].createElement(_StockHistoryList2['default'], { data: this.state.history })
+	        );
+	    }
+	});
+
+/***/ },
+/* 978 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _DataGrid = __webpack_require__(577);
+	
+	var _DataGrid2 = _interopRequireDefault(_DataGrid);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports['default'] = _react2['default'].createClass({
+	    displayName: 'StockHistoryList',
+	    render: function render() {
+	        return _react2['default'].createElement(
+	            _DataGrid2['default'],
+	            { data: this.props.data },
+	            _react2['default'].createElement('div', { header: 'Id', field: 'id' }),
+	            _react2['default'].createElement('div', { header: 'Supplier Name', field: 'supplier_name' }),
+	            _react2['default'].createElement('div', { header: 'Product Name', field: 'product_name' }),
+	            _react2['default'].createElement('div', { header: 'amount', field: 'amount' })
+	        );
+	    }
+	});
+
+/***/ },
+/* 979 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.findAll = undefined;
+	
+	var _rest = __webpack_require__(412);
+	
+	var rest = _interopRequireWildcard(_rest);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	
+	var url = "/stockhistory";
+	
+	var findAll = exports.findAll = function findAll(sort) {
+	  return rest.get(url, { sort: sort });
+	};
+
+/***/ },
+/* 980 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117719,7 +117928,7 @@
 	});
 
 /***/ },
-/* 978 */
+/* 981 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117797,7 +118006,7 @@
 	});
 
 /***/ },
-/* 979 */
+/* 982 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117844,7 +118053,7 @@
 	
 	var ShelfService = _interopRequireWildcard(_ShelfService);
 	
-	var _ShelfList = __webpack_require__(980);
+	var _ShelfList = __webpack_require__(983);
 	
 	var _ShelfList2 = _interopRequireDefault(_ShelfList);
 	
@@ -117927,7 +118136,7 @@
 	});
 
 /***/ },
-/* 980 */
+/* 983 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117974,7 +118183,7 @@
 	});
 
 /***/ },
-/* 981 */
+/* 984 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -118023,7 +118232,7 @@
 	
 	var ShelfService = _interopRequireWildcard(_ShelfService);
 	
-	var _ShelfList = __webpack_require__(980);
+	var _ShelfList = __webpack_require__(983);
 	
 	var _ShelfList2 = _interopRequireDefault(_ShelfList);
 	
@@ -118106,7 +118315,7 @@
 	});
 
 /***/ },
-/* 982 */
+/* 985 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

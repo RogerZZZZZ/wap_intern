@@ -6,8 +6,8 @@ const option = {
     color: ['#3398DB'],
     tooltip : {
         trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        axisPointer : {
+            type : 'shadow'
         }
     },
     grid: {
@@ -19,7 +19,7 @@ const option = {
     xAxis : [
         {
             type : 'category',
-            data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data : [],
             axisTick: {
                 alignWithLabel: true
             }
@@ -32,37 +32,44 @@ const option = {
     ],
     series : [
         {
-            name:'直接访问',
+            name:'Sales',
             type:'bar',
             barWidth: '60%',
-            data:[10, 52, 200, 334, 390, 330, 220]
+            data:[]
         }
     ]
 };
 
 export default React.createClass({
 
-    getOption(){
-        return option;
-    },
-
-    getData(){
-        SalesService.findSales(this.props.productId).then(data => {
-            console.log(data);
-            this.setState({data});
-        })
+    getData(productId){
+        if(productId){
+            var myChart = echarts.init(document.getElementById('charts'));
+            SalesService.findSales(productId).then(data => {
+                let xAxis = [];
+                let yAxis = [];
+                for(var i = 0; i < data.length; i++){
+                    xAxis.push(data[i].create_date);
+                    yAxis.push(data[i].count);
+                }
+                option.xAxis[0].data = xAxis;
+                option.series[0].data = yAxis;
+                myChart.setOption(option);
+                // this.setState({data});
+            })
+        }
     },
 
     getInitialState() {
-        return {data: []};
+        return {option: []};
+    },
+
+    componentWillReceiveProps(nextProps) {
+        this.getData(nextProps.product.id);
     },
 
     componentDidMount(){
-        var myChart = echarts.init(document.getElementById('charts'));
-        // 绘制图表
-        myChart.setOption(option);
-        console.log(this.props.productId);
-        this.getData();
+        // draw
     },
 
     render() {

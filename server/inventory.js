@@ -28,9 +28,9 @@ let findById = (req, res, next) => {
     let id = req.params.id;
     let supermarket_id = req.query.supermarket_id;
     // let supermarket_id = req.
-    let sql = `SELECT a.id, a.supermarket_id, a.auto_stock, b.product_name, c.supplier_name, a.inventory_sum
-            FROM inventory a,product b,supplier c
-            WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.id=$1 AND a.supermarket_id=$2`;
+    let sql = `SELECT a.product_id, a.supplier_id, a.supermarket_id, a.auto_stock, a.threshold, b.product_name, c.supplier_name, a.inventory_sum, d.amount, d.position_id
+            FROM inventory a,product b,supplier c, shelfstatus d
+            WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.id=$1 AND a.supermarket_id=$2 AND d.product_id=a.product_id`;
     db.query(sql, [parseInt(id), supermarket_id])
         .then(product =>  res.json(product[0]))
         .catch(next);

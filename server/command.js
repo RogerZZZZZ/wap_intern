@@ -35,13 +35,23 @@ let handlerTask = (req, res, next) => {
                     .catch(next);
             })
             .catch(next);
-    }else if(type === 2 || type === 3){
+    }else if(type === 2){
         let sql = `UPDATE command SET status=0 WHERE id=$1`;
         db.query(sql, [id])
             .then(product =>  res.json(product[0]))
             .catch(next);
-    }else if(type === 3){
-
+    }if(type === 3){
+        let sql = `UPDATE command SET status=0 WHERE id=$1`;
+        let sql1 = `UPDATE inventory SET inventory_sum=0 WHERE product_id=$1`
+        db.query(sql, [id])
+            .then(product => {
+                db.query(sql1, [product_id])
+                    .then(product => {
+                        res.send({result: 'ok'})
+                    })
+                    .catch(next);
+            })
+            .catch(next);
     }
 };
 

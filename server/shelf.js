@@ -4,7 +4,7 @@ let db = require('./pghelper');
 
 let findExpiredProduct = (req, res, next) => {
     let sql;
-    sql = `SELECT a.product_id, b.product_name, a.inventory_sum, a.expired_date FROM inventory a, product b WHERE expired_date < now() AND a.product_id=b.id`;
+    sql = `SELECT a.product_id, b.product_name, a.inventory_sum, a.expired_date FROM inventory a, product b WHERE expired_date < now() AND a.product_id=b.id AND a.inventory_sum > 0`;
     db.query(sql, [])
         .then(result => {res.json(result)})
         .catch(next);

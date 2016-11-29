@@ -34,6 +34,7 @@ export default React.createClass({
     },
 
     sendMission(){
+        this.handleTouchTap();
         let item = this.props.data;
         let command = {
             from_id: 1,

@@ -1,4 +1,5 @@
 drop table IF EXISTS inventory;
+drop table IF EXISTS stockhistory;
 drop table IF EXISTS staff;
 drop table IF EXISTS supplier;
 drop table IF EXISTS billdetail;
@@ -54,6 +55,13 @@ drop table IF EXISTS producttype;
       email              TEXT
   );
 
+  CREATE TABLE IF NOT EXISTS stockhistory (
+      id                 SERIAL PRIMARY KEY,
+      supplier_id      integer REFERENCES supplier(id) ON DELETE CASCADE,
+      product_id         integer REFERENCES product(id) ON DELETE CASCADE,
+      amount             integer
+  );
+
   CREATE TABLE IF NOT EXISTS bill (
       id                 SERIAL PRIMARY KEY,
       supermarket_id     integer REFERENCES supermarket(id) ON DELETE CASCADE,
@@ -80,7 +88,7 @@ CREATE TABLE IF NOT EXISTS billdetail (
     cost_amount        NUMERIC,
     supermarket_id     integer REFERENCES supermarket(id) ON DELETE CASCADE,
     type_id            integer REFERENCES producttype(id) ON DELETE CASCADE,
-    create_date        TIMESTAMP default current_timestamp
+    create_date        Date
 );
 
 CREATE TABLE IF NOT EXISTS commandtype (
@@ -270,8 +278,8 @@ INSERT INTO supplier (supplier_name, address, phone, email) VALUES
 ('apple supplier', 'XiAn Road', '475-658', 'roger199447@163.com');
 
 INSERT INTO inventory (product_id, supplier_id, inventory_sum, supermarket_id, type_id, auto_stock, expired_date, threshold) VALUES
-(1, 1, 538, 2, 2, 0, '2017-10-3', 10),
-(2, 1, 99, 2, 2, 0, '2017-10-3', 10),
+(1, 1, 25, 2, 2, 1, '2017-10-3', 10),
+(2, 1, 25, 2, 2, 0, '2017-10-3', 10),
 (3, 2, 123, 2, 4, 0, '2017-10-3', 10),
 (4, 3, 87, 2, 4, 0, '2017-10-3', 10),
 (5, 3, 876, 2, 4, 0, '2017-10-3', 10),
@@ -332,7 +340,7 @@ INSERT INTO staff (username, password, position_type, supermarket_id) VALUES
 ('salesman', '123456', 2, 2),
 ('stockman', '123456', 3, 2);
 
-INSERT INTO command (from_id, to_id, content, type_id, status, product_id) VALUES
+-- INSERT INTO command (from_id, to_id, content, type_id, status, product_id) VALUES
 -- (1, 3, 'Replace the product', 3, 1, 21),
-(0, 3, 'Expired date is comming', 2, 1, 22);
+-- (0, 3, 'Expired date is comming', 3, 1, 22);
 -- (0, 3, 'Product is not enough on the shelf', 1, 1, 23);

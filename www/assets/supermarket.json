@@ -31,7 +31,7 @@
                 "Brand": 33722,
                 "Center": [74, -123],
                 "MateId": 0,
-                "Name": "Sea Products",
+                "Name": "Fresh Products",
                 "Type": "",
                 "ShopNo": "",
                 "Category": 104,
@@ -42,7 +42,7 @@
                         [31, -74, 117, -74, 117, -172, 31, -172]
                     ]
                 ],
-                "Brief": "1046,104,33722,反斗乐园",
+                "Brief": "",
                 "dianping_id": 3311653,
                 "Area": 84.28,
                 "BrandShop": 1
@@ -176,10 +176,10 @@
                 "BrandShop": 6
             }, {
                 "_id": 4380066,
-                "Name_en": "",
+                "Name_en": "Sea Products",
                 "Center": [595.75, -40.75],
                 "MateId": 0,
-                "Name": "",
+                "Name": "Sea Product",
                 "Type": "",
                 "Brief": "",
                 "Outline": [
@@ -189,7 +189,8 @@
                 ],
                 "dianping_id": -1,
                 "ShopNo": "",
-                "Area": 29.02
+                "Area": 29.02,
+                "BrandShop": 9
             }, {
                 "Brand": 36502,
                 "Center": [596, -118.5],

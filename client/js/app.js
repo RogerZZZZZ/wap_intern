@@ -12,6 +12,7 @@ import ProductFormWrapper from './ProductFormWrapper';
 import StockmanHome from './StockmanHome';
 import InventoryRecord from './InventoryRecord';
 import InventoryView from './InventoryView';
+import StockHistoryView from './StockHistoryView';
 import InventoryFormWrapper from './InventoryFormWrapper';
 import CommandHome from './CommandHome';
 import ShelfView from './ShelfView';
@@ -39,6 +40,7 @@ render((
             <Route path="error" component={ErrorPage} />
             <Route path="shelfView/:shelfId" component={ShelfView} />
             <Route path="shelfView3D/:shelfId" component={ShelfView3D} />
+            <Route path="history" component={StockHistoryView} />
             <Route path="*" component={LoginView}/>
         </Route>
     </Router>
