@@ -7,7 +7,7 @@ let findAll = (req, res, next) => {
     let staff_id = req.query.staff_id;
     let params = [];
     let sql;
-    sql = `SELECT a.content, a.id, a.type_id, a.product_id, b.amount, b.threshold, c.inventory_sum, b.position_id, e.product_name FROM command a, shelfstatus b, inventory c, staff d, product e WHERE a.to_id=$1 AND a.status=1 AND b.product_id=a.product_id And c.product_id=a.product_id AND d.id=a.to_id AND e.id=a.product_id ORDER BY a.create_date DESC`;
+    sql = `SELECT a.content, a.id, a.type_id, a.product_id, b.amount, b.threshold, c.supplier_id, c.inventory_sum, b.position_id, e.product_name FROM command a, shelfstatus b, inventory c, staff d, product e WHERE a.to_id=$1 AND a.status=1 AND b.product_id=a.product_id And c.product_id=a.product_id AND d.id=a.to_id AND e.id=a.product_id ORDER BY a.create_date DESC`;
     params.push(parseInt(staff_id));
     db.query(sql, params)
         .then(result => res.json(result))

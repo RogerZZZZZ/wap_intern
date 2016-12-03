@@ -5,6 +5,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {deepOrange500} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as CommandService from './services/CommandService';
+import * as StockHistoryService from './services/StockHistoryService';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -26,11 +27,13 @@ export default React.createClass({
 
     completeMission(){
         let item = this.props.data;
-        CommandService.handlerTask(item.id, item.product_id, item.type_id, Math.abs(item.amount-item.threshold)).then(() => {
-            window.location.reload();
-        });
+        CommandService.handlerTask(item.id, item.product_id, item.type_id, Math.abs(item.amount-item.threshold));
         if(item.type_id === 2){
-            
+            StockHistoryService.doStock(item.product_id, item.supplier_id, item.amount, 0).then(res => window.location.reload());
+        }else if(item.type_id === 3){
+            StockHistoryService.doStock(item.product_id, item.supplier_id, item.amount, 1).then(res => window.location.reload());
+        }else{
+            window.location.reload();
         }
     },
 

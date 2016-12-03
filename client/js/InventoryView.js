@@ -22,7 +22,7 @@ export default React.createClass({
     },
 
     makeSale(){
-        SalesService.makeSale(this.props.inventory.product_id, this.props.inventory.supplier_id, this.props.inventory.threshold).then(res => console.log(res));
+        SalesService.makeSale(this.props.inventory.product_id, this.props.inventory.supplier_id, this.props.inventory.threshold).then(res => window.location.reload());
     },
 
     checkRecord(){

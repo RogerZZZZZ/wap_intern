@@ -16,7 +16,7 @@ let findAll = (req, res, next) => {
     } else {
         sql = `SELECT a.id,b.product_name,c.supplier_name,a.inventory_sum,d.type_name
                 FROM inventory a,product b,supplier c, producttype d
-                WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.supermarket_id=$1 AND a.type_id=d.id ORDER BY product_name DESC`;
+                WHERE a.product_id=b.id AND a.supplier_id=c.id AND a.supermarket_id=$1 AND b.type_id=d.id`;
     }
     params.push(parseInt(supermarket_id));
     db.query(sql, params)
